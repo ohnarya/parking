@@ -20,7 +20,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title>Hwang, Jiyoung</title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -36,14 +36,31 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'setting', 'url' => ['/site/index']],
-    ];
+
+    if(!Yii::$app->user->isGuest){
+        $leftItems = [
+            // ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Parking Lot', 'items'=>[ ['label'=>'Search Parking Lot', 'url' => Url::to(['/parkinglot/search'])],
+                                                  ['label'=>'Manage Parking Lot', 'url' => Url::to(['/parkinglot/index'])],
+                                                  ['label'=>'Manage Destination', 'url' => Url::to(['/destination/index'])],
+                                                ]],
+            ['label' => 'Search Item', 'url' => ['/search/index']]
+        ];
+
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'items' => $leftItems,
+    ]);    
+    
+    }
+    // $rightItems = [
+    //     ['label' => 'setting', 'url' => ['/site/index']],
+    // ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $rightItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        $rightItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
+        $rightItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -52,20 +69,16 @@ AppAsset::register($this);
             . Html::endForm()
             . '</li>';
     }
+    
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
+        'options' => ['class' => 'navbar-nav navbar-right padding-md-horizontal'],
+        'items' => $rightItems,
     ]);
     NavBar::end();
     ?>
 
     <div class="container-fluid">
-        <?php if(!Yii::$app->user->isGuest){ ?>
-        <div class="col-md-2 side-nav">
-         <?= $this->render('_sideNav');?>
-        </div>
-        <?php } ?>
-        <div class="col-md-10 pull-center">
+        <div class="col-md-12 no-padding">
             <div class="alert"><?= Alert::widget() ?></div>
             <div class="breadcrumbs">
             <?= Breadcrumbs::widget([

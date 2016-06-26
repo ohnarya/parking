@@ -24,7 +24,8 @@
         "fxp/composer-asset-plugin": "*",
         "ext-gd": "*",
         "kartik-v/yii2-grid": "@dev",
-        "kartik-v/yii2-mpdf": "dev-master"
+        "kartik-v/yii2-mpdf": "dev-master",
+        "kartik-v/yii2-nav-x": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

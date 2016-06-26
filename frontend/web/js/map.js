@@ -1,9 +1,11 @@
 var myLatLng;
 var map;
 var marker;
+var infowindow;
+
 function initialize()
 {
-  myLatLng =  {lat: 30.6189387, lng: -96.338738};
+  myLatLng =  {lat: 30.61954954005045, lng: -96.3371479511261};
   var mapProp = {
     center:myLatLng,
     zoom:17,
@@ -17,23 +19,32 @@ function initialize()
   // set a marker on a map
   marker.setMap(map);  
   
-  // add click listener
-  google.maps.event.addListener(map, 'click', function(event) {
-    console.log(event.latLng);
-    placeMarker(event.latLng);
-  });  
+  if($("#googleMap").attr("clickable") =="1"){
+    // add click listener
+    google.maps.event.addListener(map, 'click', function(event) {
+      placeMarker(event.latLng);
+    });  
+  }else{
+    google.maps.event.clearListeners(map, 'click');
+  }
 }
 
 function placeMarker(location) {
   marker.position = location;
   marker.setMap(map);
+  
+  console.log(location.lat());
+  console.log(location.lng());
+  
+  $("div#lat-input").find("input").val(location.lat);
+  $("div#lng-input").find("input").val(location.lng);
   window.setTimeout(function() {
     map.panTo(marker.getPosition());
   },500);
   
 }
 
-function resetMaker(position){
+function setMaker(position, info){
   marker.setMap(null);
   marker= new google.maps.Marker({
     position:myLatLng,
@@ -42,7 +53,19 @@ function resetMaker(position){
   window.setTimeout(function() {
     map.panTo(marker.getPosition());
   },500);  
+  
+  if(typeof info != 'undefined')
+    writeInfo(info);
 }
+
+
+function writeInfo(info){
+  infowindow = new google.maps.InfoWindow({
+    content:info
+    });
+  infowindow.open(map,marker);  
+}
+
 
 
 function loadScript()
@@ -57,6 +80,13 @@ window.onload = loadScript;
 
 $('.show-map').on('click',function(event){
   myLatLng =  {lat: parseFloat($(this).attr('lat')), lng: parseFloat($(this).attr('lng'))};
-  resetMaker(myLatLng);
+  info = $(this).parent().siblings(':first').next().text();
+  setMaker(myLatLng,info);
 
+});
+
+$('#parkinglotsearchform-time').on('dblclick',function(event){
+  var d = new Date();
+  var time = d.getHours() + ":" + d.getMinutes();
+  $(this).val(time);
 });

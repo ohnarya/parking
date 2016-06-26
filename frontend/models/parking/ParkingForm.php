@@ -14,9 +14,9 @@ class ParkingForm extends ParkingLot
     public function rules()
     {
         return [
-            [['name','lat','lng'], 'trim'],
-            [['name','lat','lng'], 'required'],
-            ['name', 'string', 'min' => 3, 'max' => 20],
+            [['permit','lat','lng'], 'trim'],
+            [['permit','lat','lng'], 'required'],
+            ['permit', 'string', 'min' => 3, 'max' => 20],
             [['lat','lng'],'number'],
             [['night','summer','football','construction'],'safe'],
         ];
