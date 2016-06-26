@@ -48,7 +48,7 @@ $gridColumns = [
             return Html::a('<i class="fa fa-pencil" aria-hidden="true"></i>',Url::to(['parkinglot/view','id'=>$model->id]));
         },
         'delete'=> function($url, $model){
-            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>',Url::to(['parkinglot/save','id'=>$model->id]));    
+            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>',Url::to(['parkinglot/delete','id'=>$model->id]));    
         }
         
         ]
@@ -62,7 +62,7 @@ $gridColumns = [
         $form = ActiveForm::begin([
             'id' => 'search-form',
             'action' => Url::to(['parkinglot/view']),
-            'method' =>'GET',
+            'method' =>'POST',
             'type' => ActiveForm::TYPE_INLINE,
         ]) ?>        
         <?= Html::submitButton('Add a Parking Lot', ['id'=>'search-button',

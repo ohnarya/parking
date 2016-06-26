@@ -5,6 +5,8 @@ use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use frontend\models\parking\ParkingLot;
 use frontend\models\parking\ParkingForm;
+use yii\helpers\Url;
+
 class ParkinglotController extends Controller
 {
     /**
@@ -24,27 +26,32 @@ class ParkinglotController extends Controller
     }
     public function actionView($id=null)
     {
-        $model = new ParkingForm();
+        
         if(isset($id)){
-            $model = ParkingForm::find()->where(['ID'=>$id,'Active'=>true])->one();
+            $model = ParkingForm::find()->where(['id'=>$id,'active'=>true])->one();
+        }else{
+            $model = new ParkingForm(); 
         }
         return $this->render('view',['model'=>$model]);
     }
     
     public function actionSave($id=null)
     {
-       
-        $model = new ParkingForm();
         if(isset($id)){
-             
             $model = ParkingForm::findOne($id);
-            $model->active=false;
         }else{
-            $model->load(\Yii::$app->request->post());
+            $model = new ParkingForm();
         }
+        $model->load(\Yii::$app->request->post());
         $model->save();
         
         return $this->redirect(['index']);
+    }
+    public function actionDelete($id)
+    {
+        $model = ParkingForm::findOne($id);
+        $model->delete();
+        return $this->redirect(Url::to(['parkinglot/index']));
     }
     public function actionManage()
     {
