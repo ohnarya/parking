@@ -5,6 +5,7 @@ use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use frontend\models\parking\ParkingLot;
 use frontend\models\parking\ParkingForm;
+use frontend\models\destination\Destination;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 
@@ -14,7 +15,9 @@ class ParkinglotController extends Controller
     {
         $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
         $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
-        return $this->render('search',['parkinglot'=>$parkinglot]);
+        $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
+        $destination = ArrayHelper::map($destination, 'name', 'name');
+        return $this->render('search',['parkinglot'=>$parkinglot,'destination'=>$destination]);
     }
     
     public function actionIndex()
