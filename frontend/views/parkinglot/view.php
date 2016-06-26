@@ -35,11 +35,11 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'name')
                  ->input('name',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="lat-input">
         <?= $form->field($model, 'lat')
                  ->input('lat',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="lng-input">
         <?= $form->field($model, 'lng')
                  ->input('lng',['class'=>'form-control']); ?>  
         </div>

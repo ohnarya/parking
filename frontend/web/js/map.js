@@ -19,14 +19,12 @@ function initialize()
   // set a marker on a map
   marker.setMap(map);  
   
-  if($("#googleMap").attr("clickable")=="1"){
-    console.log("add");
+  if($("#googleMap").attr("clickable") =="1"){
     // add click listener
     google.maps.event.addListener(map, 'click', function(event) {
       placeMarker(event.latLng);
     });  
   }else{
-    console.log("remove");
     google.maps.event.clearListeners(map, 'click');
   }
 }
@@ -34,6 +32,12 @@ function initialize()
 function placeMarker(location) {
   marker.position = location;
   marker.setMap(map);
+  
+  console.log(location.lat());
+  console.log(location.lng());
+  
+  $("div#lat-input").find("input").val(location.lat);
+  $("div#lng-input").find("input").val(location.lng);
   window.setTimeout(function() {
     map.panTo(marker.getPosition());
   },500);

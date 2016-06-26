@@ -56,6 +56,9 @@ $gridColumns = [
 ],    
     ];
 ?>
+<div class='col-md-12'>
+    <h3 style='text-shadow: 2px 2px 4px'>Parking Lot Information...</h3>
+</div>
 <div  class="col-md-6">
     <div class='row margin-sm'>
         <?php
@@ -66,7 +69,7 @@ $gridColumns = [
             'type' => ActiveForm::TYPE_INLINE,
         ]) ?>        
         <?= Html::submitButton('Add a Parking Lot', ['id'=>'search-button',
-                                  'class' => 'btn btn-primary']); ?>
+                                  'class' => 'btn btn-primary pull-right']); ?>
     <?php ActiveForm::end() ?>                                 
     </div>    
     <div class='row margin-sm'>
