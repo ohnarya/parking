@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use kartik\widgets\SwitchInput;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>Please fill out the following fields to signup:</p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-4">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
@@ -24,12 +25,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'email') ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
-
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Set Parking Preference</h3>
+        </div>
+        <div class="col-md-2">
+                <?= $form->field($model, 'easyparking')
+                         ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
+                                                      'handleWidth'=>20,
+                                                      'onText'=>'Yes',
+                                                      'offText'=>'No'
+                                                    ]]); ?>              
+        </div>
+        <div class="col-md-2">
+                <?= $form->field($model, 'lessbusy')
+                         ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
+                                                      'handleWidth'=>20,
+                                                      'onText'=>'Yes',
+                                                      'offText'=>'No'
+                                                    ]]); ?>              
+        </div>
+    </div>    
+    <div class="col-md-4">
+        <div class="form-group pull-right">
+            <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+        </div>
+    </div>
+    <?php ActiveForm::end(); ?>
 </div>

@@ -44,7 +44,8 @@ AppAsset::register($this);
                                                   ['label'=>'Manage Parking Lot', 'url' => Url::to(['/parkinglot/index'])],
                                                   ['label'=>'Manage Destination', 'url' => Url::to(['/destination/index'])],
                                                 ]],
-            ['label' => 'Search Item', 'url' => ['/search/index']]
+            ['label' => 'Search Item', 'url' => ['/search/index']],
+            ['label' => 'Setting', 'url' => ['/setting/index']]
         ];
 
     echo Nav::widget([

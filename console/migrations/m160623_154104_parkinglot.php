@@ -9,7 +9,6 @@ class m160623_154104_parkinglot extends Migration
     {
         $this->createTable('TB_PARKING_LOT', [
             'id'                   => $this->primaryKey(),
-            // 'symbol'               => $this->string()->notNull()->unique(),
             'permit'               => $this->string(50)->notNull()->unique(),
             'lat'                  => $this->string(),
             'lng'                  => $this->string(),
@@ -17,6 +16,7 @@ class m160623_154104_parkinglot extends Migration
             'summer'               => $this->boolean()->defaultValue(true),
             'football'             => $this->boolean()->defaultValue(true),
             'construction'         => $this->boolean()->defaultValue(false),
+            'cnt'                  => $this->integer()->defaultValue(0), 
             'active'               => $this->boolean()->defaultValue(true),
             'created_at'           => $this->integer()->notNull(),
             'updated_at'           => $this->integer()->notNull(),

@@ -20,13 +20,12 @@ $this->title='Search Parking Lot';
 $model=new ParkinglotSearchForm();
 $model->date = date('Y/m/d');
 $model->time = date('H:i:s');
-echo($model->time);
 
 ?>
 <div class='col-md-12'>
     <h3 style='text-shadow: 2px 2px 4px'>Search Parking Lot...</h3>
 </div>
-<div  class="col-md-6">
+<div  class="col-md-3">
     <div class='row margin-sm'>
         <?php
         $form = ActiveForm::begin([
@@ -60,38 +59,8 @@ echo($model->time);
                                                          'pluginOptions'=>['showMeridian'=>false]]);?>
         </div>   
         
-        <div class='padding-sm-horizontal'>
-            <br>
-            <p>&bull; Parking Lot Preference </p>
-        </div>
         
-        <div class="col-md-4">
-            <?= $form->field($model, 'closest')
-                     ->widget(SwitchInput::classname(),[ 'pluginOptions'=>[
-                                                      'handleWidth'=>20,
-                                                      'onText'=>'Yes',
-                                                      'offText'=>'No'
-                                                    ]]); ?>
-        </div>
-        
-        <div class="col-md-4">
-            <?= $form->field($model, 'popular')
-                     ->widget(SwitchInput::classname(),[ 'pluginOptions'=>[
-                                                      'handleWidth'=>20,
-                                                      'onText'=>'Yes',
-                                                      'offText'=>'No'
-                                                    ]]); ?>
-        </div>           
-        <div class="col-md-4">
-            <?= $form->field($model, 'mostofen')
-                     ->widget(SwitchInput::classname(),[ 'pluginOptions'=>[
-                                                      'handleWidth'=>20,
-                                                      'onText'=>'Yes',
-                                                      'offText'=>'No'
-                                                    ]]); ?>
-        </div>           
-        
-        <div class="pull-right">
+        <div class="col-md-12 pull-right">
             <?= Html::submitButton('Search', ['id'=>'search-button',
                                       'class' => 'btn btn-primary pull-right']); ?>
         </div>
@@ -106,7 +75,7 @@ echo($model->time);
         <h3 style='text-shadow: 2px 2px 4px'>Search Results...</h3>    
     </div>
 </div>
-<div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
+<div id="googleMap" class="col-md-9  map-container" clickable="0"></div>
 
 <?php MapAsset::register($this); ?>
 </body>

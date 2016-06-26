@@ -12,14 +12,11 @@ class ParkinglotSearchForm extends Model
     public $destination;
     public $date;
     public $time;
-    public $closest;
-    public $popular;
-    public $mostofen;
     
     public function rules()
     {
         return [
-            [['permit','destination','date','time','closest','popular','mostofen'], 'trim'],
+            [['permit','destination','date','time'], 'trim'],
             [['destination','date','time'], 'required'],
         ];
     }
