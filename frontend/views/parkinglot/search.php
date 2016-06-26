@@ -8,13 +8,19 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use kartik\widgets\TimePicker;
 use kartik\widgets\SwitchInput;
 
 use frontend\models\parking\ParkinglotSearchForm;
 
+date_default_timezone_set('America/Chicago'); 
+
 $this->title='Search Parking Lot';
 
 $model=new ParkinglotSearchForm();
+$model->date = date('Y/m/d');
+$model->time = date('H:i:s');
+echo($model->time);
 
 ?>
 <div class='col-md-12'>
@@ -29,7 +35,6 @@ $model=new ParkinglotSearchForm();
             'method' =>'POST',
             'type' => ActiveForm::TYPE_VERTICAL,
         ]) ?> 
-<?$dd = date("Y/m/d")?>
         <div class="col-md-6">
             <?= $form->field($model, 'permit')
                      ->dropdownList($parkinglot,['class'=>'form-control','prompt'=>'Select Permit..']); ?>  
@@ -42,17 +47,17 @@ $model=new ParkinglotSearchForm();
         <div class="col-md-6">
             <?= $form->field($model, 'date')->widget(DatePicker::classname(), [
                                                                                     'type'   => DatePicker::TYPE_COMPONENT_APPEND,
-                                                                                    'value'  => '08/10/2004',
                                                                                     'pluginOptions' => [
                                                                                         'autoclose' => true,
-                                                                                        'format'    => 'mm/dd/yyyy',
+                                                                                        'format'    => 'yyyy/mm/dd',
                                                                                         'todayHighlight' => true
                                                                                     ]
                                                                                 ]); ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'time')
-                     ->dropdownList($destination,['class'=>'form-control','prompt'=>'Select Destination..']); ?>  
+                     ->widget(TimePicker::classname(), [ 
+                                                         'pluginOptions'=>['showMeridian'=>false]]);?>
         </div>   
         
         <div class='padding-sm-horizontal'>
