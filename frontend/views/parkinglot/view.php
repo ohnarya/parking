@@ -86,7 +86,7 @@ $form = ActiveForm::begin([
     </div>    
 </div>
 <?php ActiveForm::end() ?>   
-<div id="googleMap" class="col-md-6  map-container"></div>
+<div id="googleMap" class="col-md-6  map-container" clickable="1"></div>
 
 <?php MapAsset::register($this); ?>
 </body>
