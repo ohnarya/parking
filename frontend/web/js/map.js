@@ -5,7 +5,7 @@ var infowindow;
 
 function initialize()
 {
-  myLatLng =  {lat: 30.6189387, lng: -96.338738};
+  myLatLng =  {lat: 30.61954954005045, lng: -96.3371479511261};
   var mapProp = {
     center:myLatLng,
     zoom:17,

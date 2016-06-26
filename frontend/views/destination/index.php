@@ -7,38 +7,18 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
-use frontend\models\parking\ParkingLot;
+use frontend\models\destination\Destination;
 
-$this->title='Manage Parking Lot';
+$this->title='Manage Destination';
 ?>
 
 <?php
-$parkinglot = new ParkingLot();
+$parkinglot = new Destination();
 $gridColumns = [
 [
     'class' => '\kartik\grid\SerialColumn'
 ],
-'permit','lat','lng',
-[
-    'class'=>'kartik\grid\BooleanColumn',
-    'attribute'=>'night', 
-    'vAlign'=>'middle'
-],    
-[
-    'class'=>'kartik\grid\BooleanColumn',
-    'attribute'=>'summer', 
-    'vAlign'=>'middle'
-],
-[
-    'class'=>'kartik\grid\BooleanColumn',
-    'attribute'=>'football', 
-    'vAlign'=>'middle'
-],
-[
-    'class'=>'kartik\grid\BooleanColumn',
-    'attribute'=>'construction', 
-    'vAlign'=>'middle'
-],
+'name','lat','lng',
 [
     'class'=>'kartik\grid\ActionColumn',
     'template' => '{view} {update} {delete}',
@@ -47,10 +27,10 @@ $gridColumns = [
             return Html::a('<i class="fa fa-map-pin" aria-hidden="true"></i>','#',['class'=>'show-map', 'lat'=>$model->lat, 'lng'=>$model->lng]);            
         },
         'update'=> function($url, $model){
-            return Html::a('<i class="fa fa-pencil" aria-hidden="true"></i>',Url::to(['parkinglot/view','id'=>$model->id]));
+            return Html::a('<i class="fa fa-pencil" aria-hidden="true"></i>',Url::to(['destination/view','id'=>$model->id]));
         },
         'delete'=> function($url, $model){
-            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>',Url::to(['parkinglot/delete','id'=>$model->id]));    
+            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>',Url::to(['destination/delete','id'=>$model->id]));    
         }
         
         ]
@@ -59,18 +39,18 @@ $gridColumns = [
     ];
 ?>
 <div class='col-md-12'>
-    <h3 style='text-shadow: 2px 2px 4px'>Parking Lot Information...</h3>
+    <h3 style='text-shadow: 2px 2px 4px'><?=$this->title?>...</h3>
 </div>
 <div  class="col-md-6">
     <div class='row margin-sm'>
         <?php
         $form = ActiveForm::begin([
-            'id' => 'search-form',
-            'action' => Url::to(['parkinglot/view']),
+            'id' => 'destination-search-form',
+            'action' => Url::to(['destination/view']),
             'method' =>'POST',
             'type' => ActiveForm::TYPE_INLINE,
         ]) ?>        
-        <?= Html::submitButton('Add a Parking Lot', ['id'=>'search-button',
+        <?= Html::submitButton('Add a Destination', ['id'=>'search-button',
                                   'class' => 'btn btn-primary pull-right']); ?>
     <?php ActiveForm::end() ?>                                 
     </div>    

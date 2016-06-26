@@ -1,19 +1,19 @@
 <?php
-namespace frontend\models\parking;
+namespace frontend\models\destination;
 
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
-class ParkingLot extends ActiveRecord 
+class Destination extends ActiveRecord 
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'TB_PARKING_LOT';
+        return 'TB_DESTINATION';
     }
 
     /**
@@ -32,11 +32,10 @@ class ParkingLot extends ActiveRecord
     public function rules()
     {
         return [
-            [['permit','lat','lng'], 'trim'],
-            [['permit','lat','lng'], 'required'],
-            ['permit', 'string', 'min' => 3, 'max' => 20],
+            [['name','lat','lng'], 'trim'],
+            [['name','lat','lng'], 'required'],
+            ['name', 'string', 'min' => 2, 'max' => 20],
             [['lat','lng'],'number'],
-            [['night','summer','football','construction'],'safe'],
         ];
     }
 }

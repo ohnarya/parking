@@ -6,14 +6,17 @@ use yii\data\ActiveDataProvider;
 use frontend\models\parking\ParkingLot;
 use frontend\models\parking\ParkingForm;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 class ParkinglotController extends Controller
 {
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
+    public function actionSearch()
+    {
+        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
+        $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
+        return $this->render('search',['parkinglot'=>$parkinglot]);
+    }
+    
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -52,10 +55,6 @@ class ParkinglotController extends Controller
         $model = ParkingForm::findOne($id);
         $model->delete();
         return $this->redirect(Url::to(['parkinglot/index']));
-    }
-    public function actionManage()
-    {
-        return $this->render('manage');
     }
 }
 ?>

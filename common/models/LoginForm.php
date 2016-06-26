@@ -73,11 +73,7 @@ class LoginForm extends Model
         if ($this->_user === null) {
             $this->_user = User::findByUsername($this->username);
         }
-<<<<<<< HEAD
         
-=======
-
->>>>>>> 1c235ac991bbc2e3ce1edb54608c7572d5aaf132
         return $this->_user;
     }
 }

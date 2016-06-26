@@ -32,8 +32,8 @@ $form = ActiveForm::begin([
         <?php // $form->field($model, 'symbol')->input('symbol',['class'=>'form-control']); ?>       
         <!--</div>-->
         <div class="col-md-12">
-        <?= $form->field($model, 'name')
-                 ->input('name',['class'=>'form-control']); ?>  
+        <?= $form->field($model, 'permit')
+                 ->input('permit',['class'=>'form-control']); ?>  
         </div>
         <div class="col-md-6" id="lat-input">
         <?= $form->field($model, 'lat')
