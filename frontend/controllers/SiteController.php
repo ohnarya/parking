@@ -12,6 +12,7 @@ use frontend\models\login\PasswordResetRequestForm;
 use frontend\models\login\ResetPasswordForm;
 use frontend\models\login\SignupForm;
 use frontend\models\login\ContactForm;
+use frontend\models\Users;
 
 /**
  * Site controller
@@ -75,11 +76,27 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
+    public function actionSetting()
+    {
+        $model = Users::findOne(Yii::$app->user->identity->id);
+
+        return $this->render('setting', [
+            'model' => $model,
+        ]);        
+    }
+    public function actionSettingsave()
+    { 
+        $model = Users::findOne(Yii::$app->user->identity->id);
+        if($model->load(Yii::$app->request->post())){
+            
+            if($model->save()){
+                return $this->redirect(['parkinglot/index']);
+            }else{
+                print_r($model->getErrors());
+            }
+        }    
+        
+    }
     public function actionLogin()
     {
    
@@ -117,6 +134,7 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
+        
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {

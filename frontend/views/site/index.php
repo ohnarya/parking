@@ -3,6 +3,7 @@ namespace frontend\views\site;
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+        print_r(\Yii::$app->user->identity);  
 ?>
 <div class="site-index">
 

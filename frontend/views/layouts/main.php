@@ -45,7 +45,7 @@ AppAsset::register($this);
                                                   ['label'=>'Manage Destination', 'url' => Url::to(['/destination/index'])],
                                                 ]],
             ['label' => 'Search Item', 'url' => ['/search/index']],
-            ['label' => 'Setting', 'url' => ['/setting/index']]
+            ['label' => 'Setting', 'url' => ['/site/setting']]
         ];
 
     echo Nav::widget([

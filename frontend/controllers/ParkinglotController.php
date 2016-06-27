@@ -11,15 +11,6 @@ use yii\helpers\ArrayHelper;
 
 class ParkinglotController extends Controller
 {
-    public function actionSearch()
-    {
-        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
-        $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
-        $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
-        $destination = ArrayHelper::map($destination, 'name', 'name');
-        return $this->render('search',['parkinglot'=>$parkinglot,'destination'=>$destination]);
-    }
-    
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -30,6 +21,16 @@ class ParkinglotController extends Controller
         ]);        
         return $this->render('index',['dataProvider'=>$dataProvider]);
     }
+     public function actionSearch()
+    {
+        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
+        $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
+        $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
+        $destination = ArrayHelper::map($destination, 'name', 'name');
+        return $this->render('search',['parkinglot'=>$parkinglot,
+                                       'destination'=>$destination]);
+    }
+    
     public function actionView($id=null)
     {
         

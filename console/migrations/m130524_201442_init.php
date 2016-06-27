@@ -21,9 +21,8 @@ class m130524_201442_init extends Migration
             'email'                => $this->string()->notNull()->unique(),
             'history'              => $this->string(255),    
             'status'               => $this->smallInteger()->notNull()->defaultValue(10),  //10 user , 20 admin
-            'closest'              => $this->boolean()->notNull()->defaultValue(true),
-            'most_ofen'            => $this->boolean()->notNull()->defaultValue(false),
-            'popular'              => $this->boolean()->notNull()->defaultValue(false),
+            'easyparking'          => $this->boolean()->notNull()->defaultValue(true),
+            'lessbusy'             => $this->boolean()->notNull()->defaultValue(false),
             'created_at'           => $this->integer()->notNull(),
             'updated_at'           => $this->integer()->notNull(),
         ], $tableOptions);

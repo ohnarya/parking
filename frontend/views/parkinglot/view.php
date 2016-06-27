@@ -8,7 +8,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\SwitchInput;
-
 ?>
 
 <?php
