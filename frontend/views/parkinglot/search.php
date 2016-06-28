@@ -25,7 +25,7 @@ $model->time = date('H:i:s');
 <div class='col-md-12'>
     <h3 style='text-shadow: 2px 2px 4px'>Search Parking Lot...</h3>
 </div>
-<div  class="col-md-3">
+<div  class="col-md-6">
     <div class='row margin-sm'>
         <?php
         $form = ActiveForm::begin([
@@ -75,7 +75,7 @@ $model->time = date('H:i:s');
         <h3 style='text-shadow: 2px 2px 4px'>Search Results...</h3>    
     </div>
 </div>
-<div id="googleMap" class="col-md-9  map-container" clickable="0"></div>
+<div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
 
 <?php MapAsset::register($this); ?>
 </body>

@@ -13,7 +13,7 @@ function initialize()
   };
   map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
   marker=new google.maps.Marker({
-    position:myLatLng,
+    position:myLatLng
     });
     
   // set a marker on a map
@@ -32,10 +32,7 @@ function initialize()
 function placeMarker(location) {
   marker.position = location;
   marker.setMap(map);
-  
-  console.log(location.lat());
-  console.log(location.lng());
-  
+
   $("div#lat-input").find("input").val(location.lat);
   $("div#lng-input").find("input").val(location.lng);
   window.setTimeout(function() {
@@ -46,16 +43,18 @@ function placeMarker(location) {
 
 function setMaker(position, info){
   marker.setMap(null);
+  
   marker= new google.maps.Marker({
-    position:myLatLng,
+    position:myLatLng
     });
   marker.setMap(map);
   window.setTimeout(function() {
     map.panTo(marker.getPosition());
   },500);  
   
-  if(typeof info != 'undefined')
+  if(typeof info != 'undefined'){
     writeInfo(info);
+  }
 }
 
 
