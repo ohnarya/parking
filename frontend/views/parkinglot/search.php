@@ -17,7 +17,6 @@ date_default_timezone_set('America/Chicago');
 
 $this->title='Search Parking Lot';
 
-$model=new ParkinglotSearchForm();
 $model->date = date('Y/m/d');
 $model->time = date('H:i:s');
 

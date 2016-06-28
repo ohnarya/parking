@@ -63,7 +63,7 @@ $gridColumns = [
 </div>
 <div  class="col-md-6">
     <div class='row margin-sm'>
-        <?= Html::a('Add a Parking Lot', [Url::to(['parkinglot/view'])], 
+        <?= Html::a('Add a Parking Lot', Url::to(['parkinglot/view']), 
                                   ['id'   =>'search-button',
                                    'class'=>'btn btn-primary pull-right']); ?>
          

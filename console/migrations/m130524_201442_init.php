@@ -21,6 +21,7 @@ class m130524_201442_init extends Migration
             'email'                => $this->string()->notNull()->unique(),
             'history'              => $this->string(255),    
             'status'               => $this->smallInteger()->notNull()->defaultValue(10),  //10 user , 20 admin
+            'permit'               => $this->string(50),
             'easyparking'          => $this->boolean()->notNull()->defaultValue(true),
             'lessbusy'             => $this->boolean()->notNull()->defaultValue(false),
             'created_at'           => $this->integer()->notNull(),

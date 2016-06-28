@@ -22,6 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
                 <?= $form->field($model, 'email') ?>
+                
+                <?= $form->field($model, 'permit')
+                         ->dropdownList($parkinglot,['class'=>'form-control'//,'multiple'=>true,
+                                                     ]); ?>
 
         </div>
     </div>

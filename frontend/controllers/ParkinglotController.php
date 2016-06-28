@@ -1,14 +1,16 @@
 <?php
 namespace frontend\controllers;
-
+use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use frontend\models\parking\ParkingLot;
 use frontend\models\parking\ParkingForm;
 use frontend\models\parking\ParkinglotSearchForm;
 use frontend\models\destination\Destination;
+use frontend\models\Users;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 class ParkinglotController extends Controller
 {
@@ -25,16 +27,23 @@ class ParkinglotController extends Controller
      public function actionSearch()
     {
         $model = new ParkinglotSearchForm();
-        if($model->load(\Yii::$app->request->post())){
+        if(!$model->load(\Yii::$app->request->post())){
+            $user = Users::findOne(Yii::$app->user->identity->id);
+            $model->permit = Json::decode($user->permit);   
             
             $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
             $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
             $destination = ArrayHelper::map($destination, 'name', 'name');
             $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
             
-            return $this->render('search',['parkinglot'=>$parkinglot,
+            return $this->render('search',['model'=>$model,
+                                           'parkinglot'=>$parkinglot,
                                            'destination'=>$destination]);
         }
+    }
+    protected function reasoning($condition)
+    {
+        // if not a guest, 
     }
 
     public function actionView($id=null)
