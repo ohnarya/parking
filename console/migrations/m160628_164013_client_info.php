@@ -8,6 +8,7 @@ class m160628_164013_client_info extends Migration
     {
         $this->createTable('TB_CLIENT', [
             'id'        => $this->primaryKey(),
+            'userid'    => $this->integer(),
             'ip'        => $this->string()->notNull(),
             'key'       => $this->string(),
             'created_at' => $this->dateTime()

@@ -93,10 +93,7 @@ class SearchController extends Controller
         // Put the signature into the parameters
         $params["Signature"] = $signature;
         uksort($params, "strnatcasecmp");
-        // TODO: the timestamp colons get urlencoded by http_build_query
-        //       and then need to be urldecoded to keep AWS happy. Spaces
-        //       get reencoded as %20, as the + encoding doesn't work with 
-        //       AWS
+
         $query = urldecode(http_build_query($params));
         $query = str_replace(' ', '%20', $query);
         $string_to_send = "https://" . $host . $uri . "?" . $query;

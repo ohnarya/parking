@@ -23,6 +23,7 @@ class Client extends ActiveRecord
     {
         return [
             [['ip','key','created_at'], 'required'],
+            ['userid','safe'],
         ];
     }
 }

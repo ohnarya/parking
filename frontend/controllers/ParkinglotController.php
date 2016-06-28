@@ -6,6 +6,7 @@ use yii\data\ActiveDataProvider;
 use frontend\models\parking\ParkingLot;
 use frontend\models\parking\ParkingForm;
 use frontend\models\parking\ParkinglotSearchForm;
+use frontend\models\parking\LotResult;
 use frontend\models\destination\Destination;
 use frontend\models\Users;
 use yii\helpers\Url;
@@ -27,6 +28,8 @@ class ParkinglotController extends Controller
      public function actionSearch()
     {
         $model = new ParkinglotSearchForm();
+        
+        // first loading
         if(!$model->load(\Yii::$app->request->post())){
             $user = Users::findOne(Yii::$app->user->identity->id);
             $model->permit = Json::decode($user->permit);   
@@ -35,60 +38,125 @@ class ParkinglotController extends Controller
             $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
             $destination = ArrayHelper::map($destination, 'name', 'name');
             $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
-            
+        
             return $this->render('search',['model'=>$model,
                                            'parkinglot'=>$parkinglot,
-                                           'destination'=>$destination]);
+                                           'destination'=>$destination,
+                                           'lots'=>null]);            
         }
         $this->reasoning($model);
+                
+        
     }
     protected function reasoning($condition)
     {
+        $destination = Destination::find()->where(['name'=>$condition['destination']])->one();
+
+        // get all available parking lots which meet regulations and rules
         $list = $this->getCandidate($condition);
-        print_r($list);
+
+        $this->getCalculate($list, $destination);
         
+        
+        // $lots = [];
+        
+        // foreach($list as $l){
+        //     $parkinglot = ParkingLot::find()->select(['lat','lng'])->where(['permit'=>$l])->asArray()->one();
+        //     $lots[$l] = Json::encode(array_values($parkinglot));
+        // }
+        // print_r($lots);
+        
+    }
+    protected function getCalculate($list, $destination)
+    {
+        $url = Yii::$app->params['googleDM'];
+        $param['units'] = 'imperial';
+        $param['travel'] = 'walking';
+        $param['origins'] = $this->setOrigins($list);
+        $param['destinations'] = $destination['lat'].','.$destination['lng'];
+        $param['key'] = getenv('GOOGLE_KEY');
+        
+        
+        // generate URL to communicate to GoogleMAP
+        $params = http_build_query($param);
+        
+        // get the result from GoogleMap
+        $result = file_get_contents($url.$params);
+        
+        $suggestions =[];
+        $result = Json::decode($result);      
+        print_r($result);
+        
+        if(isset($result['status']) && $result['status']=='OK'){
+            for($i = 0; $i < count($result['origin_addresses']) ; $i++){
+                $s = new LotResult();
+                $s['permit'] = $list[$i]['permit'];
+                $s['address'] = $result['origin_addresses'][$i];
+                $s['lat'] = $list[$i]['lat'];
+                $s['lng'] = $list[$i]['lng'];
+                $s['distance'] = $result['rows'][$i]['elements'][0]['distance'];
+                $s['time'] = $result['rows'][$i]['elements'][0]['duration'];
+                
+                $suggestions[] = $s;
+            }
+        
+            print_r($suggestions);            
+            
+        }else{
+            echo "GoogleMap Error.";
+        }
+    }
+    private function setOrigins($list)
+    {
+        
+        foreach($list as $l){
+            $origins .= $l['lat'].','.$l['lng'].'|';    
+        }
+        return rtrim($origins, "|");
     }
     protected function getCandidate($condition)
     {
         $perm = $condition['permit'];
         $dest = $condition['destination'];
-        $date = $condition['date'];
+        $date = strtotime($condition['date']);
         $time = $condition['time'];
         $list = [];
-
-        // has parking permit?
-        if(isset($perm)){
-            $list[] = $perm;
+        
+        // get all available parking lot
+        $all = ParkingLot::find()->where(['construction'=>false, 'active'=>true])->asArray()->all();
+        
+        // remove football
+        foreach($all as $lot){
+            // football will be removed : set condition later
+            if($lot['football']) unset($lot);
         }
-
-        // night parking?
-        if(isset($time) && $time>=17){
-
-            $night = ParkingLot::getNight();
-            foreach($night as $n)
-                $list[] = $n['permit'];
-        }
-
+        
         // summer parking?
-        if(isset($date) && in_array(date('m',strtotime($date)), ['06','07','08'])){
-            
-            $summer = ParkingLot::getSummer();
-            foreach($summer as $n)
-                $list[] = $n['permit'];
+        if(isset($date) && in_array(date('m',$date), ['06','07','08'])){
+            foreach($all as $lot){
+                if($lot['summer'])   
+                    $list[] = $lot;
+                    unset($lot);
+            }
+        }
+        // weekdays? 
+        if(date('w', $date)>0&& date('w',$date)<6){
+          
+            // night parking?
+            if(isset($time) && $time>=17){
+    
+               foreach($all as $lot){
+                    if($lot['night'])   
+                        $list[] = $lot;
+                        unset($lot);
+                }
+            }
         }
         
-        // football game happens?
-        if(isset($date)){ // added later
-            
-            $football = ParkingLot::getFootball();
-            $list = array_diff($list, $football);
-        }
+        // add user's permit
+        if(!isset($list[$perm]))
+            $list[] = ParkingLot::find()->where(['permit'=>$perm])->asArray()->one();
         
-        // construction
-        $construction = ParkingLot::getConstruction();
-        $list = array_diff($list, $construction);
-        
-        $list = array_unique($list);   
         
         return $list;
     }
