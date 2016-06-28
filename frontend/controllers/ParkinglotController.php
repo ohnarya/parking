@@ -40,12 +40,57 @@ class ParkinglotController extends Controller
                                            'parkinglot'=>$parkinglot,
                                            'destination'=>$destination]);
         }
+        $this->reasoning($model);
     }
     protected function reasoning($condition)
     {
-        // if not a guest, 
+        $list = $this->getCandidate($condition);
+        
     }
+    protected function getCandidate($condition)
+    {
+        $perm = $condition['permit'];
+        $dest = $condition['destination'];
+        $date = $condition['date'];
+        $time = $condition['time'];
+        $list = [];
 
+        // has parking permit?
+        if(isset($perm)){
+            $list[] = $perm;
+        }
+
+        // night parking?
+        if(isset($time) && $time>=17){
+
+            $night = ParkingLot::getNight();
+            foreach($night as $n)
+                $list[] = $n['permit'];
+        }
+
+        // // summer parking?
+        if(isset($date) && in_array(date('m',strtotime($date)), ['06','07','08'])){
+            
+            $summer = ParkingLot::getSummer();
+            foreach($summer as $n)
+                $list[] = $n['permit'];
+        }
+        
+        // // // football game happens?
+        if(isset($date)){ // added later
+            
+            $football = ParkingLot::getFootball();
+            $list = array_diff($list, $football);
+        }
+        
+        // construction
+        $construction = ParkingLot::getConstruction();
+        $list = array_diff($list, $construction);
+        
+        $list = array_unique($list);   
+        
+        return $list;
+    }
     public function actionView($id=null)
     {
         
