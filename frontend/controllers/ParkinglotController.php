@@ -45,6 +45,7 @@ class ParkinglotController extends Controller
     protected function reasoning($condition)
     {
         $list = $this->getCandidate($condition);
+        print_r($list);
         
     }
     protected function getCandidate($condition)
@@ -68,7 +69,7 @@ class ParkinglotController extends Controller
                 $list[] = $n['permit'];
         }
 
-        // // summer parking?
+        // summer parking?
         if(isset($date) && in_array(date('m',strtotime($date)), ['06','07','08'])){
             
             $summer = ParkingLot::getSummer();
@@ -76,7 +77,7 @@ class ParkinglotController extends Controller
                 $list[] = $n['permit'];
         }
         
-        // // // football game happens?
+        // football game happens?
         if(isset($date)){ // added later
             
             $football = ParkingLot::getFootball();

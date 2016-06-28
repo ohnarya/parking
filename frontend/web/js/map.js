@@ -69,10 +69,27 @@ function writeInfo(info){
 
 function loadScript()
 {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "https://maps.googleapis.com/maps/api/js?key=&sensor=false&callback=initialize";
-  document.body.appendChild(script);
+
+  $.post({url:'/parkinglot/frontend/web/index.php?r=common%2Findex', 
+          data:{'id':'GOOGLE_KEY'},
+          dataType: 'json'
+    
+  }).done(function(data){
+    // no Key
+    if(!data['result']) 
+      $("#googleMap").html("API KEY is not valid!");
+    else{
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://maps.googleapis.com/maps/api/js?key="+ data['result'] + "&callback=initialize"
+      document.body.appendChild(script);      
+    }  
+     
+  }).fail(function(data){
+     $("#googleMap").html("Server Error occured!");
+  });
+  
+
 }
 
 window.onload = loadScript;
