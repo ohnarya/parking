@@ -81,7 +81,7 @@ function loadScript()
     else{
       var script = document.createElement("script");
       script.type = "text/javascript";
-      script.src = "https://maps.googleapis.com/maps/api/js?key="+ data['result'] + "&callback=initialize"
+      script.src = "https://maps.googleapis.com/maps/api/js?key="+ data['result'] + "&callback=initialize";
       document.body.appendChild(script);      
     }  
      

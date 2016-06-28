@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\helpers\Json;
 use yii\web\Request;
 use yii\web\Response;
+use common\models\Client;
 
 class CommonController extends Controller
 {
@@ -14,7 +15,11 @@ class CommonController extends Controller
     {
         
         $id = (Yii::$app->request->post('id'));
-        
+        $client = new Client();
+        $client->ip = Yii::$app->request->getUserIP();
+        $client->key = $id;
+        $client->created_at = date("Y-m-d H:i:s");
+        $client->save();
         if(Yii::$app->request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             
@@ -23,35 +28,6 @@ class CommonController extends Controller
             return $data;
         }
             
-    }
-    public function actionView($id=null)
-    {
-        
-        if(isset($id)){
-            $model = Destination::find()->where(['id'=>$id,'active'=>true])->one();
-        }else{
-            $model = new Destination(); 
-        }
-        return $this->render('view',['model'=>$model]);
-    }
-    
-    public function actionSave($id=null)
-    {
-        if(isset($id)){
-            $model = Destination::findOne($id);
-        }else{
-            $model = new Destination();
-        }
-        $model->load(\Yii::$app->request->post());
-        $model->save();
-        
-        return $this->redirect(Url::to(['destination/index']));
-    }
-    public function actionDelete($id)
-    {
-        $model = Destination::findOne($id);
-        $model->delete();
-        return $this->redirect(Url::to(['destination/index']));
     }
 }
 ?>
