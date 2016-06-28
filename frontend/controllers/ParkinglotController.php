@@ -28,11 +28,11 @@ class ParkinglotController extends Controller
      public function actionSearch()
     {
         $model = new ParkinglotSearchForm();
+        $user = Users::findOne(Yii::$app->user->identity->id);
+        $model->permit = Json::decode($user->permit);   
         
         // first loading
         if(!$model->load(\Yii::$app->request->post())){
-            $user = Users::findOne(Yii::$app->user->identity->id);
-            $model->permit = Json::decode($user->permit);   
             
             $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
             $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
@@ -42,11 +42,16 @@ class ParkinglotController extends Controller
             return $this->render('search',['model'=>$model,
                                            'parkinglot'=>$parkinglot,
                                            'destination'=>$destination,
-                                           'lots'=>null]);            
+                                           'suggestions'=>$suggestions]);            
         }
-        $this->reasoning($model);
-                
         
+        print_r($model);
+        // $this->reasoning($model);
+                
+        return $this->render('search',['model'=>$model,
+                                      'parkinglot'=>$parkinglot,
+                                      'destination'=>$destination,
+                                      'suggestions'=>$suggestions]);         
     }
     protected function reasoning($condition)
     {
@@ -55,19 +60,33 @@ class ParkinglotController extends Controller
         // get all available parking lots which meet regulations and rules
         $list = $this->getCandidate($condition);
 
-        $this->getCalculate($list, $destination);
+        // retreive distance and duration from google
+        $lotresults = $this->getDataFromGoogle($list, $destination);
+        // calculate  closest distance and shortest duration
+        $suggestions = $this->calculate($lotresults);
         
-        
-        // $lots = [];
-        
-        // foreach($list as $l){
-        //     $parkinglot = ParkingLot::find()->select(['lat','lng'])->where(['permit'=>$l])->asArray()->one();
-        //     $lots[$l] = Json::encode(array_values($parkinglot));
-        // }
-        // print_r($lots);
+        return $suggestions;
         
     }
-    protected function getCalculate($list, $destination)
+    private function calculate($results)
+    {
+        $suggestions = [];
+
+        foreach($results as $r){
+            // closest
+            if(!isset($closest) || $closest['distance']['value'] > $r['distance']['value']){
+                $closest = $r;
+            }
+            // shortest
+            if(!isset($shortest) || $shortest['distance']['value'] > $r['distance']['value']){
+                $shortest = $r;
+            }
+        }
+        $suggestions['closest'] = $closest;
+        $suggestions['shortest'] = $shortest;
+        return $suggestions;
+    }
+    private function getDataFromGoogle($list, $destination)
     {
         $url = Yii::$app->params['googleDM'];
         $param['units'] = 'imperial';
@@ -83,9 +102,9 @@ class ParkinglotController extends Controller
         // get the result from GoogleMap
         $result = file_get_contents($url.$params);
         
-        $suggestions =[];
+        $lotinfo =[];
         $result = Json::decode($result);      
-        print_r($result);
+
         
         if(isset($result['status']) && $result['status']=='OK'){
             for($i = 0; $i < count($result['origin_addresses']) ; $i++){
@@ -97,10 +116,10 @@ class ParkinglotController extends Controller
                 $s['distance'] = $result['rows'][$i]['elements'][0]['distance'];
                 $s['time'] = $result['rows'][$i]['elements'][0]['duration'];
                 
-                $suggestions[] = $s;
+                $lotinfo[] = $s;
             }
         
-            print_r($suggestions);            
+            return $lotinfo;
             
         }else{
             echo "GoogleMap Error.";

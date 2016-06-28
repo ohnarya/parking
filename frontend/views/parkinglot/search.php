@@ -69,10 +69,16 @@ $model->time = date('H:i:s');
         
     <?php ActiveForm::end() ?>                                 
     </div>
-    
-    <div class='row margin-sm' style='display:none'>
+    <?php if(isset($suggestions)){?>
+    <div class='row margin-sm'>
         <h3 style='text-shadow: 2px 2px 4px'>Search Results...</h3>    
+        <?php foreach($suggestions as $s){
+            print_r($s);
+            echo("<br><br>");
+        }?>
+        
     </div>
+    <?php } ?>
 </div>
 <div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
 
