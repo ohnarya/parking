@@ -2,6 +2,8 @@ var myLatLng;
 var map;
 var marker;
 var infowindow;
+var directionsService;
+var directionsDisplay;
 
 function initialize()
 {
@@ -18,6 +20,10 @@ function initialize()
     
   // set a marker on a map
   marker.setMap(map);  
+  
+  
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  directionsDisplay.setMap(map);
   
   if($("#googleMap").attr("clickable") =="1"){
     // add click listener
@@ -106,3 +112,25 @@ $('#parkinglotsearchform-time').on('dblclick',function(event){
   var time = d.getHours() + ":" + d.getMinutes();
   $(this).val(time);
 });
+
+$('.lot-sugesstion').on('click', function(event){
+  console.log("test");
+  console.log($(this).attr("lat"));
+  
+  directionsService = new google.maps.DirectionsService();
+  calcRoute();
+});
+
+function calcRoute() {
+
+  var request = {
+    origin:{lat: 30.621571523179576, lng: -96.33728206157684},
+    destination:{lat: 30.618930934035166, lng: -96.33888065814972},
+    travelMode: google.maps.TravelMode.WALKING
+  };
+  directionsService.route(request, function(result, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(result);
+    }
+  });
+}
