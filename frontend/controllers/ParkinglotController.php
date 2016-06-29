@@ -3,6 +3,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use frontend\models\parking\ParkingLot;
 use frontend\models\parking\ParkingForm;
 use frontend\models\parking\ParkinglotSearchForm;
@@ -30,28 +31,26 @@ class ParkinglotController extends Controller
         $model = new ParkinglotSearchForm();
         $user = Users::findOne(Yii::$app->user->identity->id);
         $model->permit = Json::decode($user->permit);   
-        
+        $parkinglot = ParkingLot::find()->where(['active'=>true])->all();
+        $destination = Destination::find()->where(['active'=>true])->all();
+        $destarray = ArrayHelper::map($destination, 'name', 'name');
+        $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
+
         // first loading
-        if(!$model->load(\Yii::$app->request->post())){
+        if($model->load(\Yii::$app->request->post())){
+            $suggestions=$this->reasoning($model); 
             
-            $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
-            $destination = Destination::find()->select('name')->where(['active'=>true])->asArray()->all();
-            $destination = ArrayHelper::map($destination, 'name', 'name');
-            $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
-        
-            return $this->render('search',['model'=>$model,
-                                           'parkinglot'=>$parkinglot,
-                                           'destination'=>$destination,
-                                           'suggestions'=>$suggestions]);            
+            $suggestionDP = new ArrayDataProvider([
+                    'allModels'=>$suggestions
+                ]);
+            
         }
-        
-        print_r($model);
-        // $this->reasoning($model);
-                
+
         return $this->render('search',['model'=>$model,
-                                      'parkinglot'=>$parkinglot,
+                                      'parkarray'=>$parkarray,
+                                      'destarray'=>$destarray,
                                       'destination'=>$destination,
-                                      'suggestions'=>$suggestions]);         
+                                      'suggestionDP'=>$suggestionDP]);         
     }
     protected function reasoning($condition)
     {
@@ -82,8 +81,10 @@ class ParkinglotController extends Controller
                 $shortest = $r;
             }
         }
-        $suggestions['closest'] = $closest;
-        $suggestions['shortest'] = $shortest;
+        $suggestions[0]['category'] = 'closest';
+        $suggestions[0]['lot'] = $closest;
+        $suggestions[1]['category'] = 'shortest';
+        $suggestions[1]['lot'] = $shortest;
         return $suggestions;
     }
     private function getDataFromGoogle($list, $destination)
@@ -162,7 +163,7 @@ class ParkinglotController extends Controller
         if(date('w', $date)>0&& date('w',$date)<6){
           
             // night parking?
-            if(isset($time) && $time>=17){
+            if(isset($time) &&  ( $time>=17 || $time<=8) ){
     
                foreach($all as $lot){
                     if($lot['night'])   
@@ -170,6 +171,11 @@ class ParkinglotController extends Controller
                         unset($lot);
                 }
             }
+        }else{  // weekends?
+           foreach($all as $lot){
+                $list[] = $lot;
+                unset($lot);
+            }            
         }
         
         // add user's permit

@@ -4,6 +4,7 @@ namespace frontend\views\parking;
 use yii\web\View;
 use frontend\assets\MapAsset;
 use kartik\grid\GridView;
+use yii\widgets\ListView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
@@ -35,12 +36,12 @@ $model->time = date('H:i:s');
         ]) ?> 
         <div class="col-md-6">
             <?= $form->field($model, 'permit')
-                     ->dropdownList($parkinglot,['class'=>'form-control','prompt'=>'Select Permit..']); ?>  
+                     ->dropdownList($parkarray,['class'=>'form-control','prompt'=>'Select Permit..']); ?>  
         </div>
         
         <div class="col-md-6">
             <?= $form->field($model, 'destination')
-                     ->dropdownList($destination,['class'=>'form-control','prompt'=>'Select Destination..']); ?>  
+                     ->dropdownList($destarray,['class'=>'form-control','prompt'=>'Select Destination..']); ?>  
         </div>        
         <div class="col-md-6">
             <?= $form->field($model, 'date')->widget(DatePicker::classname(), [
@@ -69,14 +70,17 @@ $model->time = date('H:i:s');
         
     <?php ActiveForm::end() ?>                                 
     </div>
-    <?php if(isset($suggestions)){?>
+    <?php if(isset($suggestionDP)){  ?>
+    
     <div class='row margin-sm'>
         <h3 style='text-shadow: 2px 2px 4px'>Search Results...</h3>    
-        <?php foreach($suggestions as $s){
-            print_r($s);
-            echo("<br><br>");
-        }?>
-        
+        <div class="suggestions col-md-12">
+            <?= ListView::widget([
+                    'dataProvider' => $suggestionDP,
+                    'itemView' => '_suggestions',
+                    'layout'=>'{items}',
+                ]);?>
+        </div>
     </div>
     <?php } ?>
 </div>
