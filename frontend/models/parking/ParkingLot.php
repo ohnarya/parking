@@ -39,4 +39,20 @@ class ParkingLot extends ActiveRecord
             [['night','summer','football','construction'],'safe'],
         ];
     }
+    public static function getNight()
+    {
+        return ParkingLot::find()->select('permit')->where(['night'=>true,'active'=>true])->asArray()->all();
+    }
+    public static function getConstruction()
+    {
+        return ParkingLot::find()->select('permit')->where(['construction'=>true,'active'=>true])->column();    
+    }
+    public static function getFootball()
+    {
+        return ParkingLot::find()->select('permit')->where(['football'=>true,'active'=>true])->column();    
+    }
+    public static function getSummer()
+    {
+        return ParkingLot::find()->select('permit')->where(['summer'=>true,'active'=>true])->asArray()->all();    
+    }    
 }

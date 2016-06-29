@@ -15,7 +15,6 @@ class MapAsset extends AssetBundle
         'js/map.js'
     ];
     public $depends = [
-        '\yii\web\JqueryAsset',
     ];
 }
 ?>

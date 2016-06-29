@@ -7,11 +7,15 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use common\models\LoginForm;
 use frontend\models\login\PasswordResetRequestForm;
 use frontend\models\login\ResetPasswordForm;
 use frontend\models\login\SignupForm;
 use frontend\models\login\ContactForm;
+use frontend\models\Users;
+use frontend\models\parking\ParkingLot;
 
 /**
  * Site controller
@@ -75,11 +79,30 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
+    public function actionSetting()
+    {
+        $model = Users::findOne(Yii::$app->user->identity->id);
+        $model->permit = Json::decode($model->permit);
+        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
+        $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
+        return $this->render('setting', [
+            'model' => $model,
+            'parkinglot'=>$parkinglot
+        ]);        
+    }
+    public function actionSettingsave()
+    { 
+        $model = Users::findOne(Yii::$app->user->identity->id);
+        if($model->load(Yii::$app->request->post())){
+            $model->permit = Json::encode($model->permit);
+            if($model->save()){
+                return $this->redirect(['parkinglot/index']);
+            }else{
+                print_r($model->getErrors());
+            }
+        }    
+        
+    }
     public function actionLogin()
     {
    
@@ -117,6 +140,7 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
+        
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {

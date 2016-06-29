@@ -17,7 +17,6 @@ class SearchAsset extends AssetBundle
         'js/search.js'
     ];
     public $depends = [
-        '\yii\web\JqueryAsset',
     ];
 }
 ?>

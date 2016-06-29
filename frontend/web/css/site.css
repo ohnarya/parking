@@ -33,10 +33,28 @@
 }
 /**************************************************/
 #search-input  {
-    width:auto;
     display:inline;
 }
 /**************************************************/
+.lot-title {
+    font-size: 17px;
+}
+.lot-suggestion {
+    display:block;
+}
+.lot-title .lot {
+    display:block;
+    background-color:transparent;
+}
+
+.lot-sugesstion:hover {
+    
+    background-color:#ffe6e6;   
+    border-left: 5px solid red;
+    border-radius: 5px;
+    
+}
+
 html,
 body {
     height: 100%;

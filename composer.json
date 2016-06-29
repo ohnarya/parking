@@ -25,7 +25,7 @@
         "ext-gd": "*",
         "kartik-v/yii2-grid": "@dev",
         "kartik-v/yii2-mpdf": "dev-master",
-        "kartik-v/yii2-nav-x": "*"
+        "kartik-v/yii2-widget-switchinput": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

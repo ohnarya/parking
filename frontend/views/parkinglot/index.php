@@ -56,23 +56,17 @@ $gridColumns = [
         ]
 
 ],    
-    ];
+];
 ?>
 <div class='col-md-12'>
     <h3 style='text-shadow: 2px 2px 4px'>Parking Lot Information...</h3>
 </div>
 <div  class="col-md-6">
     <div class='row margin-sm'>
-        <?php
-        $form = ActiveForm::begin([
-            'id' => 'search-form',
-            'action' => Url::to(['parkinglot/view']),
-            'method' =>'POST',
-            'type' => ActiveForm::TYPE_INLINE,
-        ]) ?>        
-        <?= Html::submitButton('Add a Parking Lot', ['id'=>'search-button',
-                                  'class' => 'btn btn-primary pull-right']); ?>
-    <?php ActiveForm::end() ?>                                 
+        <?= Html::a('Add a Parking Lot', Url::to(['parkinglot/view']), 
+                                  ['id'   =>'search-button',
+                                   'class'=>'btn btn-primary pull-right']); ?>
+         
     </div>    
     <div class='row margin-sm'>
         <?php
@@ -90,8 +84,6 @@ $gridColumns = [
 <div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
 
 <?php MapAsset::register($this); ?>
-</body>
-</html>
 
 
   

@@ -10,6 +10,7 @@ class m160626_165452_destination extends Migration
         $this->createTable('TB_DESTINATION', [
             'id'                   => $this->primaryKey(),
             'name'                 => $this->string(50)->notNull()->unique(),
+            'address'              => $this->string(),
             'lat'                  => $this->string(),
             'lng'                  => $this->string(),
             'active'               => $this->boolean()->defaultValue(true),

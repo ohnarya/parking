@@ -39,13 +39,12 @@ AppAsset::register($this);
 
     if(!Yii::$app->user->isGuest){
         $leftItems = [
-            // ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Parking Lot', 'items'=>[ ['label'=>'Search Parking Lot', 'url' => Url::to(['/parkinglot/search'])],
                                                   ['label'=>'Manage Parking Lot', 'url' => Url::to(['/parkinglot/index'])],
                                                   ['label'=>'Manage Destination', 'url' => Url::to(['/destination/index'])],
                                                 ]],
             ['label' => 'Search Item', 'url' => ['/search/index']],
-            ['label' => 'Setting', 'url' => ['/setting/index']]
+            ['label' => 'Setting', 'url' => ['/site/setting']]
         ];
 
     echo Nav::widget([
@@ -54,9 +53,7 @@ AppAsset::register($this);
     ]);    
     
     }
-    // $rightItems = [
-    //     ['label' => 'setting', 'url' => ['/site/index']],
-    // ];
+
     if (Yii::$app->user->isGuest) {
         $rightItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $rightItems[] = ['label' => 'Login', 'url' => ['/site/login']];
