@@ -32,10 +32,10 @@ class Destination extends ActiveRecord
     public function rules()
     {
         return [
-            [['name','lat','lng'], 'trim'],
-            [['name','lat','lng'], 'required'],
+            [['name'], 'trim'],
+            [['name','address'], 'required'],
             ['name', 'string', 'min' => 2, 'max' => 20],
-            [['lat','lng'],'number'],
+            [['history'],'safe']
         ];
     }
 }

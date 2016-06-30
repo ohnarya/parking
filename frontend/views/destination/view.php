@@ -35,13 +35,13 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'name')
                  ->input('permit',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-4" id="lat-input">
-        <?= $form->field($model, 'lat')
-                 ->input('lat',['class'=>'form-control']); ?>  
+        <div class="col-md-8" id="address">
+        <?= $form->field($model, 'address')
+                 ->input('permit',['class'=>'form-control']); ?>             
         </div>
-        <div class="col-md-4" id="lng-input">
-        <?= $form->field($model, 'lng')
-                 ->input('lng',['class'=>'form-control']); ?>  
+        <div class="col-md-12" id="place">
+        <?= $form->field($model, 'place')
+                 ->hiddenInput(['class'=>'form-control'])->label(false); ?>  
         </div>
         <br>
     </div>    

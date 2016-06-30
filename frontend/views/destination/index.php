@@ -18,7 +18,7 @@ $gridColumns = [
 [
     'class' => '\kartik\grid\SerialColumn'
 ],
-'name','lat','lng',
+'name','address',
 [
     'class'=>'kartik\grid\ActionColumn',
     'template' => '{view} {update} {delete}',

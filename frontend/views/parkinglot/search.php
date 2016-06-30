@@ -41,7 +41,7 @@ $model->time = date('H:i:s');
         
         <div class="col-md-6">
             <?= $form->field($model, 'destination')
-                     ->dropdownList($destarray,['class'=>'form-control','prompt'=>'Select Destination..']); ?>  
+                     ->dropdownList($destarray,['id'=>'destination','class'=>'form-control','prompt'=>'Select Destination..']); ?>  
         </div>        
         <div class="col-md-6">
             <?= $form->field($model, 'date')->widget(DatePicker::classname(), [
@@ -58,16 +58,12 @@ $model->time = date('H:i:s');
                      ->widget(TimePicker::classname(), [ 
                                                          'pluginOptions'=>['showMeridian'=>false]]);?>
         </div>   
-        
-        
+
         <div class="col-md-12 pull-right">
             <?= Html::submitButton('Search', ['id'=>'search-button',
                                       'class' => 'btn btn-primary pull-right']); ?>
         </div>
-        
-        
-        
-        
+  
     <?php ActiveForm::end() ?>                                 
     </div>
     <?php if(isset($suggestionDP)){  ?>
