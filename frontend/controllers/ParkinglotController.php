@@ -56,10 +56,7 @@ class ParkinglotController extends Controller
                                       'destination'=>$destination,
                                       'suggestionDP'=>$suggestionDP]);         
     }
-    public function actionHistory()
-    {
-        
-    }
+
     public function actionView($id=null)
     {
         
@@ -203,6 +200,7 @@ class ParkinglotController extends Controller
                 $s['place']    = $list[$i]['place'];
                 $s['distance'] = $result['rows'][$i]['elements'][0]['distance'];
                 $s['time']     = $result['rows'][$i]['elements'][0]['duration'];
+                $s['destination'] = $destination['place'];  // destination place
                 
                 $lotinfo[] = $s;
             }

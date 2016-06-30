@@ -23,7 +23,7 @@ $model->time = date('H:i:s');
 
 ?>
 <div class='col-md-12'>
-    <h3 style='text-shadow: 2px 2px 4px'>Search Parking Lot...</h3>
+    <h3>Search Parking Lot...</h3>
 </div>
 <div  class="col-md-6">
     <div class='row margin-sm'>
@@ -62,34 +62,32 @@ $model->time = date('H:i:s');
         <br>
         <div class="col-md-12">
         <hr>    
-        <h3>Parking Preference</h3>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="col-md-4">
-                <?= $form->field($model, 'easyparking')->checkbox();?>             
-        </div>
-        <div class="col-md-4">
-                <?= $form->field($model, 'easyexit')->checkbox();?>             
-        </div>
-        <div class="col-md-4">
-                <?= $form->field($model, 'myhistory')->checkbox();?>           
-        </div> 
-        <br>
-        <br>
-        <br>
-        <div class="col-md-12 pull-right">
-            <?= Html::submitButton('Search', ['id'=>'search-button',
-                                      'class' => 'btn btn-primary']); ?>
+            <h3>Parking Preference</h3>
+        
+            <br>
+            <div class="col-md-4">
+                    <?= $form->field($model, 'easyparking')->checkbox();?>             
+            </div>
+            <div class="col-md-4">
+                    <?= $form->field($model, 'easyexit')->checkbox();?>             
+            </div>
+            <div class="col-md-4">
+                    <?= $form->field($model, 'myhistory')->checkbox();?>           
+            </div> 
+            <br>
+            <br>
+            <br>
+            <div class="col-md-12 pull-right">
+                <?= Html::submitButton('Search', ['id'=>'search-button',
+                                          'class' => 'btn btn-primary']); ?>
+            </div>
         </div>
     <?php ActiveForm::end() ?>                                 
     </div>
     <?php if(isset($suggestionDP)){  ?>
     
     <div class='row margin-sm'>
-        <h3 style='text-shadow: 2px 2px 4px'>Search Results...</h3>    
+        <h3>Search Results...</h3>    
         <div class="suggestions col-md-12">
             <?= ListView::widget([
                     'dataProvider' => $suggestionDP,

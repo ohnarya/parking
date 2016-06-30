@@ -6,14 +6,14 @@ var infowindow;
 var directionsService;
 var directionsDisplay;
 
-function initialize()
+function initialize(place)
 {
   myLatLng =  {lat: parseFloat(30.61954954005045), lng: parseFloat(-96.3371479511261)};
   geocoder = new google.maps.Geocoder;
   
   var mapProp = {
     center:myLatLng,
-    zoom:17,
+    zoom:16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
@@ -122,43 +122,11 @@ function writeInfo(info){
 }
 
 
-
-
-
-$('.show-map').on('click',function(event){
-  myLatLng =  formatLatlng($(this).attr('place'));
-  info = $(this).parent().siblings(':first').next().text();
-  setMaker(myLatLng,info);
-
-});
-
-
-
-$('.lot-sugesstion').on('click', function(event){
-  console.log("test");
-  console.log($(this).attr("lat"));
-  
-  directionsService = new google.maps.DirectionsService();
-  calcRoute();
-});
 function formatLatlng(latlng)  
 {
     var latlngStr = latlng.split(',', 2);
     var latStr = latlngStr[0].split(':',2);
     var lngStr = latlngStr[1].split(':',2);
     return {lat: parseFloat(latStr[1]), lng: parseFloat(lngStr[1])};
-}
-function calcRoute() {
-
-  var request = {
-    origin:{lat: 30.621571523179576, lng: -96.33728206157684},
-    destination:{lat: 30.618930934035166, lng: -96.33888065814972},
-    travelMode: google.maps.TravelMode.WALKING
-  };
-  directionsService.route(request, function(result, status) {
-    if (status == google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(result);
-    }
-  });
 }
 
