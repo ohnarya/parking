@@ -23,7 +23,7 @@ $form = ActiveForm::begin([
 <div  class="col-md-6">
     <div class='row margin-sm'>
         <div class='col-md-12'>
-            <h3 style='text-shadow: 2px 2px 4px'><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h3>
+            <h3><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h3>
             <div class="col-md-12 pull-right">
             <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'destination-save-button',
                                       'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>
@@ -35,13 +35,13 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'name')
                  ->input('permit',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-4" id="lat-input">
-        <?= $form->field($model, 'lat')
-                 ->input('lat',['class'=>'form-control']); ?>  
+        <div class="col-md-12" id="address">
+        <?= $form->field($model, 'address')
+                 ->input('permit',['class'=>'form-control']); ?>             
         </div>
-        <div class="col-md-4" id="lng-input">
-        <?= $form->field($model, 'lng')
-                 ->input('lng',['class'=>'form-control']); ?>  
+        <div class="col-md-12" id="place">
+        <?= $form->field($model, 'place')
+                 ->hiddenInput(['class'=>'form-control'])->label(false); ?>  
         </div>
         <br>
     </div>    

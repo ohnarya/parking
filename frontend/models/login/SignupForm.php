@@ -13,7 +13,9 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $easyparking;
-    public $lessbusy;
+    public $easyexit;
+    public $myhistory;
+    public $permit;
 
     /**
      * @inheritdoc
@@ -34,7 +36,7 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            [['easyparking','lessbusy'],'safe']
+            [['easyparking','easyexit','myhistory','permit'],'safe']
         ];
     }
 

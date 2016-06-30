@@ -24,7 +24,7 @@ class Users extends ActiveRecord
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            [['easyparking','lessbusy','permit'],'safe'],
+            [['easyparking','easyexit','myhistory', 'permit'],'safe'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
         ];

@@ -1,14 +1,19 @@
 var myLatLng;
 var map;
+var geocoder;
 var marker;
 var infowindow;
+var directionsService;
+var directionsDisplay;
 
-function initialize()
+function initialize(place)
 {
-  myLatLng =  {lat: 30.61954954005045, lng: -96.3371479511261};
+  myLatLng =  {lat: parseFloat(30.61954954005045), lng: parseFloat(-96.3371479511261)};
+  geocoder = new google.maps.Geocoder;
+  
   var mapProp = {
     center:myLatLng,
-    zoom:17,
+    zoom:16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
@@ -17,7 +22,11 @@ function initialize()
     });
     
   // set a marker on a map
-  marker.setMap(map);  
+  // marker.setMap(map);  
+  
+  
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  directionsDisplay.setMap(map);
   
   if($("#googleMap").attr("clickable") =="1"){
     // add click listener
@@ -29,17 +38,64 @@ function initialize()
   }
 }
 
+window.onload = loadScript;
+
+function loadScript()
+{
+
+  $.post({url:'/parkinglot/frontend/web/index.php?r=common%2Findex', 
+          data:{'id':'GOOGLE_KEY'},
+          dataType: 'json'
+    
+  }).done(function(data){
+    // no Key
+    if(!data['result']) 
+      $("#googleMap").html("API KEY is not valid!");
+    else{
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://maps.googleapis.com/maps/api/js?key="+ data['result'] + "&callback=initialize";
+      document.body.appendChild(script); 
+    }  
+     
+  }).fail(function(data){
+     $("#googleMap").html("Server Error occured!");
+  });
+}
+
 function placeMarker(location) {
   marker.position = location;
   marker.setMap(map);
 
-  $("div#lat-input").find("input").val(location.lat);
-  $("div#lng-input").find("input").val(location.lng);
+  // find an address from place(lat,lng)
+  geocodeLatLng(location);
+
   window.setTimeout(function() {
     map.panTo(marker.getPosition());
-  },500);
+  },300);
   
 }
+
+function geocodeLatLng(location) {
+
+  geocoder.geocode({'location': location}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        
+        var addr = results[0].formatted_address.split(",");
+        addr.pop();addr.pop();
+        $("div#address").find("input").val(addr.join(','));
+        $("div#place").find("input").val(JSON.stringify(location));
+        
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
 
 function setMaker(position, info){
   marker.setMap(null);
@@ -66,43 +122,11 @@ function writeInfo(info){
 }
 
 
-
-function loadScript()
+function formatLatlng(latlng)  
 {
-
-  $.post({url:'/parkinglot/frontend/web/index.php?r=common%2Findex', 
-          data:{'id':'GOOGLE_KEY'},
-          dataType: 'json'
-    
-  }).done(function(data){
-    // no Key
-    if(!data['result']) 
-      $("#googleMap").html("API KEY is not valid!");
-    else{
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "https://maps.googleapis.com/maps/api/js?key="+ data['result'] + "&callback=initialize";
-      document.body.appendChild(script);      
-    }  
-     
-  }).fail(function(data){
-     $("#googleMap").html("Server Error occured!");
-  });
-  
-
+    var latlngStr = latlng.split(',', 2);
+    var latStr = latlngStr[0].split(':',2);
+    var lngStr = latlngStr[1].split(':',2);
+    return {lat: parseFloat(latStr[1]), lng: parseFloat(lngStr[1])};
 }
 
-window.onload = loadScript;
-
-$('.show-map').on('click',function(event){
-  myLatLng =  {lat: parseFloat($(this).attr('lat')), lng: parseFloat($(this).attr('lng'))};
-  info = $(this).parent().siblings(':first').next().text();
-  setMaker(myLatLng,info);
-
-});
-
-$('#parkinglotsearchform-time').on('dblclick',function(event){
-  var d = new Date();
-  var time = d.getHours() + ":" + d.getMinutes();
-  $(this).val(time);
-});

@@ -12,7 +12,8 @@ class MapAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
-        'js/map.js'
+        'js/map.js',
+        'js/lotsearch.js'
     ];
     public $depends = [
     ];

@@ -10,14 +10,16 @@ class ParkinglotSearchForm extends ParkingLot
     public $destination;
     public $date;
     public $time;
-    public $result;   // address , lat, lng, time, distance
+    public $easyparking;
+    public $easyexitg;  
+    public $myhistory;  
     
     public function rules()
     {
         return [
             [['permit','destination','date','time'], 'trim'],
             [['destination','date','time'], 'required'],
-            ['result','safe']
+            [['easyparking','easyexit','myhistory'], 'safe'],
         ];
     }
 }

@@ -5,7 +5,7 @@ use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use frontend\models\parking\ParkingLot;
-use frontend\models\parking\ParkingForm;
+// use frontend\models\parking\ParkingForm;
 use frontend\models\parking\ParkinglotSearchForm;
 use frontend\models\parking\LotResult;
 use frontend\models\destination\Destination;
@@ -30,20 +30,24 @@ class ParkinglotController extends Controller
     {
         $model = new ParkinglotSearchForm();
         $user = Users::findOne(Yii::$app->user->identity->id);
-        $model->permit = Json::decode($user->permit);   
+
         $parkinglot = ParkingLot::find()->where(['active'=>true])->all();
         $destination = Destination::find()->where(['active'=>true])->all();
         $destarray = ArrayHelper::map($destination, 'name', 'name');
         $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
 
-        // first loading
+        
         if($model->load(\Yii::$app->request->post())){
             $suggestions=$this->reasoning($model); 
             
             $suggestionDP = new ArrayDataProvider([
                     'allModels'=>$suggestions
                 ]);
-            
+        }else{ // first loading
+            $model->permit = Json::decode($user->permit);   
+            $model->easyparking = $user->easyparking;
+            $model->easyexit = $user->easyexit;
+            $model->myhistory =$user->myhistory;
         }
 
         return $this->render('search',['model'=>$model,
@@ -51,6 +55,61 @@ class ParkinglotController extends Controller
                                       'destarray'=>$destarray,
                                       'destination'=>$destination,
                                       'suggestionDP'=>$suggestionDP]);         
+    }
+
+    public function actionView($id=null)
+    {
+        
+        if(isset($id)){
+            $model = ParkingLot::find()->where(['id'=>$id,'active'=>true])->one();
+        }else{
+            $model = new ParkingLot(); 
+        }
+        return $this->render('view',['model'=>$model]);
+    }
+    
+    public function actionSave($id=null)
+    {
+        if(isset($id)){
+            $model = ParkingLot::findOne($id);
+        }else{
+            $model = new ParkingLot();
+        }
+        $model->load(\Yii::$app->request->post());
+        $model->save();
+        
+        return $this->redirect(['index']);
+    }
+    public function actionStore()
+    {
+        $dest = \Yii::$app->request->post('dest');
+        $lot  = \Yii::$app->request->post('lot');;
+        if(!$dest || !$lot) return false;
+        
+        // store history in destination
+        $destination =  Destination::find()->where(['name'=>$dest])->one();
+        $history=Json::decode($destination['history']);
+        $history[$lot]++;
+        $destination->history = Json::encode($history);
+        $destination->save();
+        unset($history);
+        
+        // store history in user only if when user is logined
+        if(!Yii::$app->user->isGuest){
+            $user = Users::findOne(Yii::$app->user->identity->id);
+            $history = Json::decode($user['history']);
+            $history[$dest][$lot]++;
+            $user->history = Json::encode($history);
+            $user->save();
+        }
+
+        return true;
+    }
+    public function actionDelete($id)
+    {
+        $model = ParkingLot::findOne($id);
+        $model->delete();
+        return $this->redirect(Url::to(['parkinglot/index']));
     }
     protected function reasoning($condition)
     {
@@ -61,13 +120,53 @@ class ParkinglotController extends Controller
 
         // retreive distance and duration from google
         $lotresults = $this->getDataFromGoogle($list, $destination);
+        
         // calculate  closest distance and shortest duration
-        $suggestions = $this->calculate($lotresults);
+        $suggestions = $this->calculate($lotresults, Json::decode($destination['history']));
+        $s = $this->preferable($list, $lotresults, $condition);
+        if($s) $suggestions[] = $s;
         
         return $suggestions;
         
     }
-    private function calculate($results)
+    private function preferable($list, $results, $condition)
+    {
+
+        $points = [];
+        $user = Users::findOne(Yii::$app->user->identity->id);
+        $history = Json::decode($user['history'])[$condition['destination']];
+        if(!$history) return;
+        
+        // calculate scores based on preference
+        foreach($list as $l){
+            if($condition['easyparking'] && $l['easyparking']) $points[$l['permit']]++;
+            if($condition['easyexit'] && $l['easyexit']) $points[$l['permit']]++;
+            
+            // myhistory is only for login users
+            if(!Yii::$app->user->isGuest && isset($history) && $history[$l['permit']]){
+                $points[$l['permit']] = $points[$l['permit']] + $history[$l['permit']];
+            }
+        }
+        
+        // get the best score
+        foreach($points as $p => $score){
+            if(!isset($preferable) || $preferable['score'] < $score){
+                $preferable['permit'] = $p;
+                $preferable['score'] = $score;
+            }
+        }
+        
+        $suggestion['category']='preferable';
+        foreach($results as $r){
+            if($r['permit'] === $preferable['permit']){
+                $suggestion['lot'] = $r; break;
+            }
+        }
+
+        return $suggestions;
+        
+    }
+    private function calculate($results, $history)
     {
         $suggestions = [];
 
@@ -76,26 +175,38 @@ class ParkinglotController extends Controller
             if(!isset($closest) || $closest['distance']['value'] > $r['distance']['value']){
                 $closest = $r;
             }
-            // shortest
-            if(!isset($shortest) || $shortest['distance']['value'] > $r['distance']['value']){
-                $shortest = $r;
+            // most often
+            if(isset($history) && (!isset($cnt) || ( in_array($r['permit'], $history) && $cnt < $history['permit']['cnt']))){
+                $mostoften = $r;
+                $cnt = $history['permit']['cnt'];
             }
         }
-        $suggestions[0]['category'] = 'closest';
-        $suggestions[0]['lot'] = $closest;
-        $suggestions[1]['category'] = 'shortest';
-        $suggestions[1]['lot'] = $shortest;
+        if($closest){
+            $suggestions[0]['category'] = 'closest';
+            $suggestions[0]['lot'] = $closest;
+        }
+        if($mostoften){
+            $suggestions[1]['category'] = 'mostoften';
+            $suggestions[1]['lot'] = $mostoften;
+        }
+    
         return $suggestions;
     }
+    
+    /**********************************************
+     * 
+     * get distance and duration info from Google
+     * 
+     * ********************************************/
     private function getDataFromGoogle($list, $destination)
     {
         $url = Yii::$app->params['googleDM'];
-        $param['units'] = 'imperial';
-        $param['travel'] = 'walking';
-        $param['origins'] = $this->setOrigins($list);
-        $param['destinations'] = $destination['lat'].','.$destination['lng'];
-        $param['key'] = getenv('GOOGLE_KEY');
-        
+        $param['units']        = 'imperial';
+        $param['travel']       = 'walking';
+        $param['origins']      = $this->setOrigins($list);  // all the candidates parking lots
+        $param['key']          = getenv('GOOGLE_KEY');
+        $d = Json::decode($destination['place']);
+        $param['destinations'] = $d['lat'].','.$d['lng'];  
         
         // generate URL to communicate to GoogleMAP
         $params = http_build_query($param);
@@ -105,17 +216,16 @@ class ParkinglotController extends Controller
         
         $lotinfo =[];
         $result = Json::decode($result);      
-
         
         if(isset($result['status']) && $result['status']=='OK'){
             for($i = 0; $i < count($result['origin_addresses']) ; $i++){
                 $s = new LotResult();
-                $s['permit'] = $list[$i]['permit'];
-                $s['address'] = $result['origin_addresses'][$i];
-                $s['lat'] = $list[$i]['lat'];
-                $s['lng'] = $list[$i]['lng'];
+                $s['permit']   = $list[$i]['permit'];
+                $s['address']  = $result['origin_addresses'][$i];
+                $s['place']    = $list[$i]['place'];
                 $s['distance'] = $result['rows'][$i]['elements'][0]['distance'];
-                $s['time'] = $result['rows'][$i]['elements'][0]['duration'];
+                $s['time']     = $result['rows'][$i]['elements'][0]['duration'];
+                $s['destination'] = $destination['place'];  // destination place
                 
                 $lotinfo[] = $s;
             }
@@ -130,8 +240,10 @@ class ParkinglotController extends Controller
     {
         
         foreach($list as $l){
-            $origins .= $l['lat'].','.$l['lng'].'|';    
+            $p = Json::decode($l['place']);
+            $origins .= $p['lat'].','.$p['lng'].'|';    
         }
+        
         return rtrim($origins, "|");
     }
     protected function getCandidate($condition)
@@ -184,35 +296,6 @@ class ParkinglotController extends Controller
         
         
         return $list;
-    }
-    public function actionView($id=null)
-    {
-        
-        if(isset($id)){
-            $model = ParkingForm::find()->where(['id'=>$id,'active'=>true])->one();
-        }else{
-            $model = new ParkingForm(); 
-        }
-        return $this->render('view',['model'=>$model]);
-    }
-    
-    public function actionSave($id=null)
-    {
-        if(isset($id)){
-            $model = ParkingForm::findOne($id);
-        }else{
-            $model = new ParkingForm();
-        }
-        $model->load(\Yii::$app->request->post());
-        $model->save();
-        
-        return $this->redirect(['index']);
-    }
-    public function actionDelete($id)
-    {
-        $model = ParkingForm::findOne($id);
-        $model->delete();
-        return $this->redirect(Url::to(['parkinglot/index']));
-    }
+    }    
 }
 ?>

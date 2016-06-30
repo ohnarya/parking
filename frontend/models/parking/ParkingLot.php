@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helper\Json;
 
 class ParkingLot extends ActiveRecord 
 {
@@ -32,12 +33,19 @@ class ParkingLot extends ActiveRecord
     public function rules()
     {
         return [
-            [['permit','lat','lng'], 'trim'],
-            [['permit','lat','lng'], 'required'],
-            ['permit', 'string', 'min' => 3, 'max' => 20],
-            [['lat','lng'],'number'],
-            [['night','summer','football','construction'],'safe'],
+            [['permit','place'], 'trim'],
+            [['permit','address'], 'required'],
+            ['permit', 'string', 'min' => 2, 'max' => 20],
+            [['night','summer','football','construction','address'],'safe'],
         ];
+    }
+    public static function getPlace($lat, $lng)
+    {
+        return Json::encode(['lat'=>$lat, 'lng'=>$lng]);
+    }
+    public static function getLatLng($place)
+    {
+        return Json::decode($place);
     }
     public static function getNight()
     {

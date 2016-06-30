@@ -53,9 +53,7 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function actions()
     {
         return [
@@ -68,7 +66,7 @@ class SiteController extends Controller
             ],
         ];
     }
-        
+ 
     /**
      * Displays homepage.
      *
@@ -148,9 +146,12 @@ class SiteController extends Controller
                 }
             }
         }
-
+        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->asArray()->all();
+        $parkinglot = ArrayHelper::map($parkinglot, 'permit', 'permit');
+        
         return $this->render('signup', [
             'model' => $model,
+            'parkinglot' => $parkinglot
         ]);
     }
 
