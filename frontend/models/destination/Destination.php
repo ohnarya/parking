@@ -33,7 +33,7 @@ class Destination extends ActiveRecord
     {
         return [
             [['name'], 'trim'],
-            [['name','address'], 'required'],
+            [['name','address','place'], 'required'],
             ['name', 'string', 'min' => 2, 'max' => 20],
             [['history'],'safe']
         ];

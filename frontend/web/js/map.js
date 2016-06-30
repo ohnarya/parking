@@ -66,7 +66,7 @@ function loadScript()
 function placeMarker(location) {
   marker.position = location;
   marker.setMap(map);
-  console.log({'lat':location.lat(),'lng':location.lng()});
+
   // find an address from place(lat,lng)
   geocodeLatLng(location);
 
@@ -75,6 +75,27 @@ function placeMarker(location) {
   },300);
   
 }
+
+function geocodeLatLng(location) {
+
+  geocoder.geocode({'location': location}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        
+        var addr = results[0].formatted_address.split(",");
+        addr.pop();addr.pop();
+        $("div#address").find("input").val(addr.join(','));
+        $("div#place").find("input").val(JSON.stringify(location));
+        
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
 
 function setMaker(position, info){
   marker.setMap(null);
@@ -105,7 +126,7 @@ function writeInfo(info){
 
 
 $('.show-map').on('click',function(event){
-  myLatLng =  {lat: parseFloat($(this).attr('lat')), lng: parseFloat($(this).attr('lng'))};
+  myLatLng =  formatLatlng($(this).attr('place'));
   info = $(this).parent().siblings(':first').next().text();
   setMaker(myLatLng,info);
 
@@ -120,7 +141,13 @@ $('.lot-sugesstion').on('click', function(event){
   directionsService = new google.maps.DirectionsService();
   calcRoute();
 });
-
+function formatLatlng(latlng)  
+{
+    var latlngStr = latlng.split(',', 2);
+    var latStr = latlngStr[0].split(':',2);
+    var lngStr = latlngStr[1].split(':',2);
+    return {lat: parseFloat(latStr[1]), lng: parseFloat(lngStr[1])};
+}
 function calcRoute() {
 
   var request = {
@@ -135,20 +162,3 @@ function calcRoute() {
   });
 }
 
-function geocodeLatLng(location) {
-
-  geocoder.geocode({'location': location}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      if (results[1]) {
-
-        $("div#address").find("input").val(results[0].formatted_address);
-        $("div#place").find("input").val(JSON.stringify(location));
-        
-      } else {
-        window.alert('No results found');
-      }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
-    }
-  });
-}

@@ -30,22 +30,23 @@ $form = ActiveForm::begin([
         <!--<div class="col-md-6">-->
         <?php // $form->field($model, 'symbol')->input('symbol',['class'=>'form-control']); ?>       
         <!--</div>-->
-        <div class="col-md-12">
+        <div class="col-md-3">
         <?= $form->field($model, 'permit')
                  ->input('permit',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-6" id="lat-input">
-        <?= $form->field($model, 'lat')
-                 ->input('lat',['class'=>'form-control']); ?>  
+        <div class="col-md-9" id="address">
+        <?= $form->field($model, 'address')
+                 ->input('address',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-6" id="lng-input">
-        <?= $form->field($model, 'lng')
-                 ->input('lng',['class'=>'form-control']); ?>  
+        <div id="place">
+        <?= $form->field($model, 'place')
+                 ->hiddenInput(['class'=>'form-control'])->label(false); ?>  
         </div>
+        
         <div class='padding-sm-horizontal'>
             <p>&bull; Parking Lot Status </p>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
         <?= $form->field($model, 'night')
                  ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
                                                       'handleWidth'=>20,
@@ -53,7 +54,7 @@ $form = ActiveForm::begin([
                                                       'offText'=>'No'
                                                     ]]); ?>
         </div>
-        <div class="col-md-6">         
+        <div class="col-md-3">         
         <?= $form->field($model, 'summer')
                  ->widget(SwitchInput::classname(),[ 'pluginOptions'=>[
                                                       'handleWidth'=>20,
@@ -61,7 +62,7 @@ $form = ActiveForm::begin([
                                                       'offText'=>'No'
                                                     ]]); ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
         <?= $form->field($model, 'football')
                  ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
                                                       'handleWidth'=>20,
@@ -69,7 +70,7 @@ $form = ActiveForm::begin([
                                                       'offText'=>'No'
                                                     ]]); ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
         <?= $form->field($model, 'construction')
                  ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
                                                       'handleWidth'=>20,
@@ -78,7 +79,7 @@ $form = ActiveForm::begin([
                                                     ]]); ?>              
         </div>
         <br>
-        <div class="pull-right">
+        <div class="col-md-12">
         <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'parkinglot-save-button',
                                   'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>
         </div>                      

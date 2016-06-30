@@ -18,7 +18,7 @@ $gridColumns = [
 [
     'class' => '\kartik\grid\SerialColumn'
 ],
-'permit','lat','lng',
+'permit','address',
 [
     'class'=>'kartik\grid\BooleanColumn',
     'attribute'=>'night', 
@@ -44,7 +44,7 @@ $gridColumns = [
     'template' => '{view} {update} {delete}',
     'buttons' => [
         'view' => function($url, $model){
-            return Html::a('<i class="fa fa-map-pin" aria-hidden="true"></i>','#',['class'=>'show-map', 'lat'=>$model->lat, 'lng'=>$model->lng]);            
+            return Html::a('<i class="fa fa-map-pin" aria-hidden="true"></i>','#',['class'=>'show-map', 'place'=>$model->place]);            
         },
         'update'=> function($url, $model){
             return Html::a('<i class="fa fa-pencil" aria-hidden="true"></i>',Url::to(['parkinglot/view','id'=>$model->id]));

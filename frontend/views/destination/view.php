@@ -35,7 +35,7 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'name')
                  ->input('permit',['class'=>'form-control']); ?>  
         </div>
-        <div class="col-md-8" id="address">
+        <div class="col-md-12" id="address">
         <?= $form->field($model, 'address')
                  ->input('permit',['class'=>'form-control']); ?>             
         </div>

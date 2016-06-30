@@ -35,8 +35,7 @@ class ParkingLot extends ActiveRecord
         return [
             [['permit','place'], 'trim'],
             [['permit','address'], 'required'],
-            ['permit', 'string', 'min' => 3, 'max' => 20],
-            [['lat','lng'],'number'],
+            ['permit', 'string', 'min' => 2, 'max' => 20],
             [['night','summer','football','construction','address'],'safe'],
         ];
     }

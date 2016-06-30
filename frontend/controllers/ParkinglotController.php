@@ -5,7 +5,7 @@ use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use frontend\models\parking\ParkingLot;
-use frontend\models\parking\ParkingForm;
+// use frontend\models\parking\ParkingForm;
 use frontend\models\parking\ParkinglotSearchForm;
 use frontend\models\parking\LotResult;
 use frontend\models\destination\Destination;
@@ -52,14 +52,17 @@ class ParkinglotController extends Controller
                                       'destination'=>$destination,
                                       'suggestionDP'=>$suggestionDP]);         
     }
-
+    public function actionHistory()
+    {
+        
+    }
     public function actionView($id=null)
     {
         
         if(isset($id)){
-            $model = ParkingForm::find()->where(['id'=>$id,'active'=>true])->one();
+            $model = ParkingLot::find()->where(['id'=>$id,'active'=>true])->one();
         }else{
-            $model = new ParkingForm(); 
+            $model = new ParkingLot(); 
         }
         return $this->render('view',['model'=>$model]);
     }
@@ -67,9 +70,9 @@ class ParkinglotController extends Controller
     public function actionSave($id=null)
     {
         if(isset($id)){
-            $model = ParkingForm::findOne($id);
+            $model = ParkingLot::findOne($id);
         }else{
-            $model = new ParkingForm();
+            $model = new ParkingLot();
         }
         $model->load(\Yii::$app->request->post());
         $model->save();
@@ -78,7 +81,7 @@ class ParkinglotController extends Controller
     }
     public function actionDelete($id)
     {
-        $model = ParkingForm::findOne($id);
+        $model = ParkingLot::findOne($id);
         $model->delete();
         return $this->redirect(Url::to(['parkinglot/index']));
     }
