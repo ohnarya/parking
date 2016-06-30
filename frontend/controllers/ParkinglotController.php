@@ -116,19 +116,18 @@ class ParkinglotController extends Controller
         }
         $suggestions[0]['category'] = 'closest';
         $suggestions[0]['lot'] = $closest;
-        $suggestions[1]['category'] = 'shortest';
-        $suggestions[1]['lot'] = $shortest;
+    
         return $suggestions;
     }
     private function getDataFromGoogle($list, $destination)
     {
         $url = Yii::$app->params['googleDM'];
-        $param['units'] = 'imperial';
-        $param['travel'] = 'walking';
-        $param['origins'] = $this->setOrigins($list);
-        $param['destinations'] = $destination['lat'].','.$destination['lng'];
-        $param['key'] = getenv('GOOGLE_KEY');
-        
+        $param['units']        = 'imperial';
+        $param['travel']       = 'walking';
+        $param['origins']      = $this->setOrigins($list);  // all the candidates parking lots
+        $param['key']          = getenv('GOOGLE_KEY');
+        $d = Json::decode($destination['place']);
+        $param['destinations'] = $d['lat'].','.$d['lng'];  
         
         // generate URL to communicate to GoogleMAP
         $params = http_build_query($param);
@@ -138,17 +137,15 @@ class ParkinglotController extends Controller
         
         $lotinfo =[];
         $result = Json::decode($result);      
-
         
         if(isset($result['status']) && $result['status']=='OK'){
             for($i = 0; $i < count($result['origin_addresses']) ; $i++){
                 $s = new LotResult();
-                $s['permit'] = $list[$i]['permit'];
-                $s['address'] = $result['origin_addresses'][$i];
-                $s['lat'] = $list[$i]['lat'];
-                $s['lng'] = $list[$i]['lng'];
+                $s['permit']   = $list[$i]['permit'];
+                $s['address']  = $result['origin_addresses'][$i];
+                $s['place']    = $list[$i]['place'];
                 $s['distance'] = $result['rows'][$i]['elements'][0]['distance'];
-                $s['time'] = $result['rows'][$i]['elements'][0]['duration'];
+                $s['time']     = $result['rows'][$i]['elements'][0]['duration'];
                 
                 $lotinfo[] = $s;
             }
@@ -163,8 +160,10 @@ class ParkinglotController extends Controller
     {
         
         foreach($list as $l){
-            $origins .= $l['lat'].','.$l['lng'].'|';    
+            $p = Json::decode($l['place']);
+            $origins .= $p['lat'].','.$p['lng'].'|';    
         }
+        
         return rtrim($origins, "|");
     }
     protected function getCandidate($condition)
