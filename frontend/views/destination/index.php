@@ -39,7 +39,7 @@ $gridColumns = [
     ];
 ?>
 <div class='col-md-12'>
-    <h3 style='text-shadow: 2px 2px 4px'><?=$this->title?>...</h3>
+    <h3><?=$this->title?>...</h3>
 </div>
 <div  class="col-md-6">
     <div class='row margin-sm'>
@@ -70,8 +70,7 @@ $gridColumns = [
 <div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
 
 <?php MapAsset::register($this); ?>
-</body>
-</html>
+
 
 
   

@@ -23,7 +23,7 @@ $form = ActiveForm::begin([
 <div  class="col-md-6">
     <div class='row margin-sm'>
         <div class='col-md-12'>
-            <h3 style='text-shadow: 2px 2px 4px'><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h3>
+            <h3><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h3>
             <div class="col-md-12 pull-right">
             <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'destination-save-button',
                                       'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>

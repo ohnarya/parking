@@ -80,6 +80,31 @@ class ParkinglotController extends Controller
         
         return $this->redirect(['index']);
     }
+    public function actionStore()
+    {
+        $dest = \Yii::$app->request->post('dest');
+        $lot  = \Yii::$app->request->post('lot');;
+        if(!$dest || !$lot) return false;
+        
+        // store history in destination
+        $destination =  Destination::find()->where(['name'=>$dest])->one();
+        $history=Json::decode($destination['history']);
+        $history[$lot]++;
+        $destination->history = Json::encode($history);
+        $destination->save();
+        unset($history);
+        
+        // store history in user only if when user is logined
+        if(!Yii::$app->user->isGuest){
+            $user = Users::findOne(Yii::$app->user->identity->id);
+            $history = Json::decode($user['history']);
+            $history[$dest][$lot]++;
+            $user->history = Json::encode($history);
+            $user->save();
+        }
+
+        return true;
+    }
     public function actionDelete($id)
     {
         $model = ParkingLot::findOne($id);

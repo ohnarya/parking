@@ -1,8 +1,24 @@
-function storeHistory($permit){
-    console.log("storeHistory");
-    console.log($("#destination").val());
+function storeHistory(){
+  console.log("storehistory");
+  var dest = $("#destination").val();
+  var lot  = $("#parkinglotsearchform-permit").val(); 
+  
+  $.post({url:'/parkinglot/frontend/web/index.php?r=parkinglot%2Fstore', 
+          data:{'dest': dest, 'lot':lot},
+          dataType: 'json'
+  }).done(function(data){
+    
+    if(!data) 
+      window.status = "History was not stored properly.";
+    else{
+      window.status = "History was stored successfully.";
+    }  
+     
+  }).fail(function(data){
+    window.status = "Server Error.";
+  });  
 }
-
+  
 
 $('#parkinglotsearchform-time').on('dblclick',function(event){
   var d = new Date();
@@ -17,17 +33,12 @@ $('.show-map').on('click',function(event){
 
 });
 
-
-
-$('.lot-sugesstion').on('click', function(event){
-  console.log("test");
-  console.log($(this).attr("lat"));
-  
-});
-
 $('.lot-suggestion').on('click',function(){
-  if($(".direction_container").is(":visible")){
-    $("#directionsPanel").html("");
+
+  var panel = $(this).find(".direction_container").find("#directionsPanel")[0];
+  
+  if($(this).find(".direction_container").is(":visible") ){
+    $(this).find("#directionsPanel").html("");
     
     directionsDisplay.setMap(null);
     directionsDisplay.setPanel(null);
@@ -44,12 +55,12 @@ $('.lot-suggestion').on('click',function(){
     directionsService.route(request, function(result, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         directionsDisplay.setDirections(result);
-        // directionsDisplay.setMap(map);
-        directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(panel);
       }
     });
     directionsDisplay.setMap(map);
   }
 
-  $(".direction_container").toggle();
+  $(this).find(".direction_container").toggle();
 });

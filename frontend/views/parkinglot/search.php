@@ -11,21 +11,17 @@ use kartik\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\TimePicker;
 use kartik\widgets\SwitchInput;
-
 use frontend\models\parking\ParkinglotSearchForm;
 
 date_default_timezone_set('America/Chicago'); 
-
 $this->title='Search Parking Lot';
-
 $model->date = date('Y/m/d');
 $model->time = date('H:i:s');
-
 ?>
-<div class='col-md-12'>
-    <h3>Search Parking Lot...</h3>
-</div>
 <div  class="col-md-6">
+    <div>
+        <h3>Search Parking Lot...</h3>
+    </div>  
     <div class='row margin-sm'>
         <?php
         $form = ActiveForm::begin([
@@ -60,35 +56,35 @@ $model->time = date('H:i:s');
         </div>   
         <br>
         <br>
-        <div class="col-md-12">
-        <hr>    
-            <h3>Parking Preference</h3>
-        
-            <br>
-            <div class="col-md-4">
-                    <?= $form->field($model, 'easyparking')->checkbox();?>             
-            </div>
-            <div class="col-md-4">
-                    <?= $form->field($model, 'easyexit')->checkbox();?>             
-            </div>
-            <div class="col-md-4">
-                    <?= $form->field($model, 'myhistory')->checkbox();?>           
-            </div> 
-            <br>
-            <br>
-            <br>
-            <div class="col-md-12 pull-right">
-                <?= Html::submitButton('Search', ['id'=>'search-button',
-                                          'class' => 'btn btn-primary']); ?>
-            </div>
-        </div>
-    <?php ActiveForm::end() ?>                                 
+        <br> 
     </div>
+    <div class='row margin-sm'>
+        <h3>Parking Preference</h3>
+        <div class="col-md-4">
+                <?= $form->field($model, 'easyparking')->checkbox();?>             
+        </div>
+        <div class="col-md-4">
+                <?= $form->field($model, 'easyexit')->checkbox();?>             
+        </div>
+        <div class="col-md-4">
+                <?= $form->field($model, 'myhistory')->checkbox();?>           
+        </div> 
+        <br>
+        <br>
+        <br>
+        <div>
+            <?= Html::submitButton('Search', ['id'=>'search-button',
+                                      'class' => 'btn btn-primary']); ?>
+        </div>
+    </div>
+    
+    <?php ActiveForm::end() ?>                                 
+    
     <?php if(isset($suggestionDP)){  ?>
     
-    <div class='row margin-sm'>
+    <div class='margin-sm'>
         <h3>Search Results...</h3>    
-        <div class="suggestions col-md-12">
+        <div class="suggestions">
             <?= ListView::widget([
                     'dataProvider' => $suggestionDP,
                     'itemView' => '_suggestions',
@@ -98,11 +94,10 @@ $model->time = date('H:i:s');
     </div>
     <?php } ?>
 </div>
-<div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
+
+<div id="googleMap" class="col-md-6 map-container" clickable="0"></div>
 
 <?php MapAsset::register($this); ?>
-</body>
-</html>
 
 
   
