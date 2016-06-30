@@ -39,16 +39,15 @@
 .lot-title {
     font-size: 17px;
 }
-.lot-suggestion {
-    display:block;
-}
-.lot-title .lot {
-    display:block;
+
+.lot-title {
     background-color:transparent;
 }
-
-.lot-sugesstion:hover {
-    
+.lot {
+    background-color:transparent;
+}
+.lot-suggestion:hover {
+    display:block;
     background-color:#ffe6e6;   
     border-left: 5px solid red;
     border-radius: 5px;

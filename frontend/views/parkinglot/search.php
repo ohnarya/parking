@@ -77,7 +77,9 @@ $model->time = date('H:i:s');
         <div class="col-md-4">
                 <?= $form->field($model, 'myhistory')->checkbox();?>           
         </div> 
-
+        <br>
+        <br>
+        <br>
         <div class="col-md-12 pull-right">
             <?= Html::submitButton('Search', ['id'=>'search-button',
                                       'class' => 'btn btn-primary']); ?>
