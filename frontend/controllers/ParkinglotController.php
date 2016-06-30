@@ -30,20 +30,24 @@ class ParkinglotController extends Controller
     {
         $model = new ParkinglotSearchForm();
         $user = Users::findOne(Yii::$app->user->identity->id);
-        $model->permit = Json::decode($user->permit);   
+
         $parkinglot = ParkingLot::find()->where(['active'=>true])->all();
         $destination = Destination::find()->where(['active'=>true])->all();
         $destarray = ArrayHelper::map($destination, 'name', 'name');
         $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
 
-        // first loading
+        
         if($model->load(\Yii::$app->request->post())){
             $suggestions=$this->reasoning($model); 
             
             $suggestionDP = new ArrayDataProvider([
                     'allModels'=>$suggestions
                 ]);
-            
+        }else{ // first loading
+            $model->permit = Json::decode($user->permit);   
+            $model->easyparking = $user->easyparking;
+            $model->easyexit = $user->easyexit;
+            $model->myhistory =$user->myhistory;
         }
 
         return $this->render('search',['model'=>$model,
@@ -94,13 +98,53 @@ class ParkinglotController extends Controller
 
         // retreive distance and duration from google
         $lotresults = $this->getDataFromGoogle($list, $destination);
+        
         // calculate  closest distance and shortest duration
-        $suggestions = $this->calculate($lotresults);
+        $suggestions = $this->calculate($lotresults, Json::decode($destination['history']));
+        $s = $this->preferable($list, $lotresults, $condition);
+        if($s) $suggestions[] = $s;
         
         return $suggestions;
         
     }
-    private function calculate($results)
+    private function preferable($list, $results, $condition)
+    {
+
+        $points = [];
+        $user = Users::findOne(Yii::$app->user->identity->id);
+        $history = Json::decode($user['history'])[$condition['destination']];
+        if(!$history) return;
+        
+        // calculate scores based on preference
+        foreach($list as $l){
+            if($condition['easyparking'] && $l['easyparking']) $points[$l['permit']]++;
+            if($condition['easyexit'] && $l['easyexit']) $points[$l['permit']]++;
+            
+            // myhistory is only for login users
+            if(!Yii::$app->user->isGuest && isset($history) && $history[$l['permit']]){
+                $points[$l['permit']] = $points[$l['permit']] + $history[$l['permit']];
+            }
+        }
+        
+        // get the best score
+        foreach($points as $p => $score){
+            if(!isset($preferable) || $preferable['score'] < $score){
+                $preferable['permit'] = $p;
+                $preferable['score'] = $score;
+            }
+        }
+        
+        $suggestion['category']='preferable';
+        foreach($results as $r){
+            if($r['permit'] === $preferable['permit']){
+                $suggestion['lot'] = $r; break;
+            }
+        }
+
+        return $suggestions;
+        
+    }
+    private function calculate($results, $history)
     {
         $suggestions = [];
 
@@ -109,16 +153,29 @@ class ParkinglotController extends Controller
             if(!isset($closest) || $closest['distance']['value'] > $r['distance']['value']){
                 $closest = $r;
             }
-            // shortest
-            if(!isset($shortest) || $shortest['distance']['value'] > $r['distance']['value']){
-                $shortest = $r;
+            // most often
+            if(isset($history) && (!isset($cnt) || ( in_array($r['permit'], $history) && $cnt < $history['permit']['cnt']))){
+                $mostoften = $r;
+                $cnt = $history['permit']['cnt'];
             }
         }
-        $suggestions[0]['category'] = 'closest';
-        $suggestions[0]['lot'] = $closest;
+        if($closest){
+            $suggestions[0]['category'] = 'closest';
+            $suggestions[0]['lot'] = $closest;
+        }
+        if($mostoften){
+            $suggestions[1]['category'] = 'mostoften';
+            $suggestions[1]['lot'] = $mostoften;
+        }
     
         return $suggestions;
     }
+    
+    /**********************************************
+     * 
+     * get distance and duration info from Google
+     * 
+     * ********************************************/
     private function getDataFromGoogle($list, $destination)
     {
         $url = Yii::$app->params['googleDM'];

@@ -23,7 +23,8 @@ class m130524_201442_init extends Migration
             'status'               => $this->smallInteger()->notNull()->defaultValue(10),  //10 user , 20 admin
             'permit'               => $this->string(50),
             'easyparking'          => $this->boolean()->notNull()->defaultValue(true),
-            'lessbusy'             => $this->boolean()->notNull()->defaultValue(false),
+            'easyexit'             => $this->boolean()->notNull()->defaultValue(true),
+            'myhistory'            => $this->boolean()->notNull()->defaultValue(true),
             'created_at'           => $this->integer()->notNull(),
             'updated_at'           => $this->integer()->notNull(),
         ], $tableOptions);

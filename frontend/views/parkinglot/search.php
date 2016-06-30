@@ -58,12 +58,30 @@ $model->time = date('H:i:s');
                      ->widget(TimePicker::classname(), [ 
                                                          'pluginOptions'=>['showMeridian'=>false]]);?>
         </div>   
+        <br>
+        <br>
+        <div class="col-md-12">
+        <hr>    
+        <h3>Parking Preference</h3>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="col-md-4">
+                <?= $form->field($model, 'easyparking')->checkbox();?>             
+        </div>
+        <div class="col-md-4">
+                <?= $form->field($model, 'easyexit')->checkbox();?>             
+        </div>
+        <div class="col-md-4">
+                <?= $form->field($model, 'myhistory')->checkbox();?>           
+        </div> 
 
         <div class="col-md-12 pull-right">
             <?= Html::submitButton('Search', ['id'=>'search-button',
-                                      'class' => 'btn btn-primary pull-right']); ?>
+                                      'class' => 'btn btn-primary']); ?>
         </div>
-  
     <?php ActiveForm::end() ?>                                 
     </div>
     <?php if(isset($suggestionDP)){  ?>

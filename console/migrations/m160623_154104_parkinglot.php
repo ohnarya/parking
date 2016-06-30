@@ -17,6 +17,7 @@ class m160623_154104_parkinglot extends Migration
             'football'             => $this->boolean()->defaultValue(true),
             'construction'         => $this->boolean()->defaultValue(false),
             'easyparking'          => $this->boolean()->defaultValue(false),
+            'easyexit'             => $this->boolean()->defaultValue(false),
             'active'               => $this->boolean()->defaultValue(true),
             'created_at'           => $this->integer()->notNull(),
             'updated_at'           => $this->integer()->notNull(),

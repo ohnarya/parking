@@ -5,12 +5,16 @@ use yii\helpers\Url;
 <br>
 <div class="lot-sugesstion row"  place=<?=$model['lot']['place']?>>
     <div class="lot-title col-md-12">
-        <?php if( $model['category'] == 'closest' ){
+        <?php if( $model['category'] === 'closest' ){
             echo '<i class="fa fa-font-awesome" aria-hidden="true"></i> Closest Distance';
 
-        }else if($model['category'] == 'shortest') {
-            echo '<i class="fa fa-rocket" aria-hidden="true"></i> Shortest Duration';
+        }else if($model['category'] === 'mostoften') {
+            echo '<i class="fa fa-users" aria-hidden="true"></i> Most Often Visited';
+            
+        }else if($model['category'] === 'preferable') {
+            echo '<i class="fa fa-users" aria-hidden="true"></i> Most Preferable';
         }
+        
         ?>
 
         <?php
