@@ -169,16 +169,16 @@ class ParkinglotController extends Controller
     private function calculate($results, $history)
     {
         $suggestions = [];
-
+        $cnt;
         foreach($results as $r){
             // closest
             if(!isset($closest) || $closest['distance']['value'] > $r['distance']['value']){
                 $closest = $r;
             }
             // most often
-            if(isset($history) && (!isset($cnt) || ( in_array($r['permit'], $history) && $cnt < $history['permit']['cnt']))){
+            if(is_array($history) && (!isset($cnt) || ( in_array($r['permit'], $history) && $cnt < $history[$r['permit']]))){
                 $mostoften = $r;
-                $cnt = $history['permit']['cnt'];
+                $cnt = $history[$r['permit']];
             }
         }
         if($closest){
