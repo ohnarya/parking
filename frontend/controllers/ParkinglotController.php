@@ -26,37 +26,6 @@ class ParkinglotController extends Controller
         ]);        
         return $this->render('index',['dataProvider'=>$dataProvider]);
     }
-     public function actionSearch()
-    {
-        $model = new ParkinglotSearchForm();
-        $user = Users::findOne(Yii::$app->user->identity->id);
-
-        $parkinglot = ParkingLot::find()->where(['active'=>true])->all();
-        $destination = Destination::find()->where(['active'=>true])->all();
-        $destarray = ArrayHelper::map($destination, 'name', 'name');
-        $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
-
-        
-        if($model->load(\Yii::$app->request->post())){
-            $suggestions=$this->reasoning($model); 
-            
-            $suggestionDP = new ArrayDataProvider([
-                    'allModels'=>$suggestions
-                ]);
-        }else{ // first loading
-            $model->permit = Json::decode($user->permit);   
-            $model->easyparking = $user->easyparking;
-            $model->easyexit = $user->easyexit;
-            $model->myhistory =$user->myhistory;
-        }
-
-        return $this->render('search',['model'=>$model,
-                                      'parkarray'=>$parkarray,
-                                      'destarray'=>$destarray,
-                                      'destination'=>$destination,
-                                      'suggestionDP'=>$suggestionDP]);         
-    }
-
     public function actionView($id=null)
     {
         
@@ -111,20 +80,52 @@ class ParkinglotController extends Controller
         $model->delete();
         return $this->redirect(Url::to(['parkinglot/index']));
     }
+    
+    public function actionSearch()
+    {
+        $model = new ParkinglotSearchForm();
+        $user = Users::findOne(Yii::$app->user->identity->id);
+
+        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->all();
+        $destination = Destination::find()->select('name')->where(['active'=>true])->all();
+        $destarray = ArrayHelper::map($destination, 'name', 'name');
+        $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
+
+        
+        if($model->load(\Yii::$app->request->post())){
+            $suggestions=$this->reasoning($model); 
+            
+            $suggestionDP = new ArrayDataProvider([
+                    'allModels'=>$suggestions
+                ]);
+        }else{ // first loading
+            $model->permit = Json::decode($user->permit);   
+            $model->easyparking = $user->easyparking;
+            $model->easyexit = $user->easyexit;
+            $model->myhistory =$user->myhistory;
+        }
+
+        return $this->render('search',['model'=>$model,
+                                      'parkarray'=>$parkarray,
+                                      'destarray'=>$destarray,
+                                      'destination'=>$destination,
+                                      'suggestionDP'=>$suggestionDP]);         
+    }
     protected function reasoning($condition)
     {
-        $destination = Destination::find()->where(['name'=>$condition['destination']])->one();
+        $destination = Destination::find()->select(['place','history'])->where(['name'=>$condition['destination']])->one();
 
         // get all available parking lots which meet regulations and rules
         $list = $this->getCandidate($condition);
 
         // retreive distance and duration from google
-        $lotresults = $this->getDataFromGoogle($list, $destination);
+        $list = $this->getDataFromGoogle($list, $destination['place']);
         
         // calculate  closest distance and shortest duration
-        $suggestions = $this->calculate($lotresults, Json::decode($destination['history']));
-        $s = $this->preferable($list, $lotresults, $condition);
-        if($s) $suggestions[] = $s;
+        $suggestions = $this->calculate($list, Json::decode($destination['history']));
+        
+        // $s = $this->preferable($list, $lotresults, $condition);
+        // if($s) $suggestions[] = $s;
         
         return $suggestions;
         
@@ -166,21 +167,25 @@ class ParkinglotController extends Controller
         return $suggestions;
         
     }
-    private function calculate($results, $history)
+    private function calculate($list, $history)
     {
         $suggestions = [];
         $cnt;
-        foreach($results as $r){
+        foreach($list as $r){
+           
             // closest
             if(!isset($closest) || $closest['distance']['value'] > $r['distance']['value']){
+               
                 $closest = $r;
             }
+
             // most often
             if(is_array($history) && (!isset($cnt) || ( in_array($r['permit'], $history) && $cnt < $history[$r['permit']]))){
                 $mostoften = $r;
                 $cnt = $history[$r['permit']];
             }
         }
+                    
         if($closest){
             $suggestions[0]['category'] = 'closest';
             $suggestions[0]['lot'] = $closest;
@@ -189,7 +194,7 @@ class ParkinglotController extends Controller
             $suggestions[1]['category'] = 'mostoften';
             $suggestions[1]['lot'] = $mostoften;
         }
-    
+
         return $suggestions;
     }
     
@@ -198,53 +203,42 @@ class ParkinglotController extends Controller
      * get distance and duration info from Google
      * 
      * ********************************************/
-    private function getDataFromGoogle($list, $destination)
+    private function getDataFromGoogle($list, $destplace)
     {
+
         $url = Yii::$app->params['googleDM'];
         $param['units']        = 'imperial';
-        $param['travel']       = 'walking';
-        $param['origins']      = $this->setOrigins($list);  // all the candidates parking lots
+        $param['mode']       = 'walking';
+        $param['avoid']     = 'indoor';
         $param['key']          = getenv('GOOGLE_KEY');
-        $d = Json::decode($destination['place']);
+        $d = Json::decode($destplace);
         $param['destinations'] = $d['lat'].','.$d['lng'];  
         
         // generate URL to communicate to GoogleMAP
         $params = http_build_query($param);
         
-        // get the result from GoogleMap
-        $result = file_get_contents($url.$params);
-        
-        $lotinfo =[];
-        $result = Json::decode($result);      
-        
-        if(isset($result['status']) && $result['status']=='OK'){
-            for($i = 0; $i < count($result['origin_addresses']) ; $i++){
-                $s = new LotResult();
-                $s['permit']   = $list[$i]['permit'];
-                $s['address']  = $result['origin_addresses'][$i];
-                $s['place']    = $list[$i]['place'];
-                $s['distance'] = $result['rows'][$i]['elements'][0]['distance'];
-                $s['time']     = $result['rows'][$i]['elements'][0]['duration'];
-                $s['destination'] = $destination['place'];  // destination place
-                
-                $lotinfo[] = $s;
-            }
-        
-            return $lotinfo;
+        foreach($list as $k => $l){
+            $o = Json::decode($l['place']);
+            $param['origins'] = $o['lat'].','.$o['lng'];
             
-        }else{
-            echo "GoogleMap Error.";
+            // generate URL to communicate to GoogleMAP
+            $params = http_build_query($param);
+            
+            // get the result from GoogleMap
+            $result = file_get_contents($url.$params);
+            $result = Json::decode($result);
+            
+            if($result['status']==='OK'){
+              
+                $list[$k]['distance'] = $result['rows'][0]['elements'][0]['distance'];
+                $list[$k]['time']     = $result['rows'][0]['elements'][0]['duration'];
+            }else{
+                echo "GoogleMap Error.";
+                break;
+            }
+            
         }
-    }
-    private function setOrigins($list)
-    {
-        
-        foreach($list as $l){
-            $p = Json::decode($l['place']);
-            $origins .= $p['lat'].','.$p['lng'].'|';    
-        }
-        
-        return rtrim($origins, "|");
+        return $list;
     }
     protected function getCandidate($condition)
     {
@@ -252,50 +246,38 @@ class ParkinglotController extends Controller
         $dest = $condition['destination'];
         $date = strtotime($condition['date']);
         $time = $condition['time'];
-        $list = [];
-        
-        // get all available parking lot
-        $all = ParkingLot::find()->where(['construction'=>false, 'active'=>true])->asArray()->all();
-        
-        // remove football
-        foreach($all as $lot){
-            // football will be removed : set condition later
-            if($lot['football']) unset($lot);
-        }
-        
-        // summer parking?
-        if(isset($date) && in_array(date('m',$date), ['06','07','08'])){
-            foreach($all as $lot){
-                if($lot['summer'])   
-                    $list[] = $lot;
-                    unset($lot);
+
+        //weekends?
+        if(date('w', $date)==0 || date('w',$date)==6){
+            $weekends = ParkingLot::find()->select(['permit','address','place'])->where(['construction'=>false,'active'=>true])->asArray()->all(); 
+            foreach($weekends as $w){
+                $list[$w['permit']] = $w;
+                
             }
-        }
-        // weekdays? 
-        if(date('w', $date)>0&& date('w',$date)<6){
-          
-            // night parking?
-            if(isset($time) &&  ( $time>=17 || $time<=8) ){
+        }else{
+            // summer parking?
+            if(isset($date) && in_array(date('m',$date), ['06','07','08'])){
+                $summer = ParkingLot::find()->select(['permit','address','place'])->where(['construction'=>false,'active'=>true])
+                         ->andWhere(['summer'=>true])->asArray()->all();
+                foreach($summer as $su){
+                    $list[$su['permit']] = $su;
+                }     
+            }
     
-               foreach($all as $lot){
-                    if($lot['night'])   
-                        $list[] = $lot;
-                        unset($lot);
-                }
+            // night parking?
+            if($time>=17 || $time<=8){
+                $night = ParkingLot::find()->select(['permit','address','place'])->where(['construction'=>false,'active'=>true])
+                         ->andWhere(['night'=>true])->asArray()->all();
+                foreach($night as $n){
+                    $list[$n['permit']] = $n;
+                }  
             }
-        }else{  // weekends?
-           foreach($all as $lot){
-                $list[] = $lot;
-                unset($lot);
-            }            
         }
-        
         // add user's permit
-        if(!isset($list[$perm]))
-            $list[] = ParkingLot::find()->where(['permit'=>$perm])->asArray()->one();
-        
-        
-        return $list;
+        if(isset($perm) && $perm!='' ){
+            $list[$perm] = ParkingLot::find()->select(['permit','address','place'])->where(['permit'=>$perm])->asArray()->one();
+        }
+        return array_values($list);
     }    
 }
 ?>
