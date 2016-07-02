@@ -41,12 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <h3>Parking History</h3>
         </div>
-        <div class="col-md-12">
+        <div>
         <?php 
             $history = Json::decode($model->history);
-            if(isset($history)){
-                foreach($histroy as $permig=>$cnt){
-                   echo $permit. ":".$cnt."<br>";
+
+            if(is_array($history) || is_object($history)){
+                foreach($history as $d=>$p){
+                  echo "<p class='col-md-4'><i class='fa fa-check-circle' aria-hidden='true'></i> ".$d. ":</p>";
+                  echo "<p class='col-md-8'>";
+                        foreach($p as $n=>$cnt){
+                            echo $n.": ".$cnt." time(s). <br>";
+                        }
+                  echo "</p>";
                 }
             }else{ 
                 echo "No Parking History.<br>";

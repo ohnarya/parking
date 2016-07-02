@@ -1,5 +1,0 @@
- id | username |             auth_key             |                        password_hash                         | password_reset_token |     email      | history | status |   permit    | easyparking | lessbusy | created_at | updated_at 
-----+----------+----------------------------------+--------------------------------------------------------------+----------------------+----------------+---------+--------+-------------+-------------+----------+------------+------------
-  1 | user     | ZwfRswH4u6XX477sIByXB_MdjRxlOrA5 | $2y$13$6bZMVM7YF4tVTi/CtVbtcOz9BLN1vhSkYRQIP56oIg8f80fgILhBe |                      | user@email.com |         |     10 | "permit 55" | t           | t        | 1467077456 | 1467078248
-(1 row)
-
