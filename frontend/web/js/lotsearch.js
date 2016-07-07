@@ -45,18 +45,24 @@ $('.lot-suggestion').on('click',function(){
     marker.setMap(null);
     
   }else{
+
     directionsService = new google.maps.DirectionsService();
-    
+
     var request = {
-      origin: formatLatlng($(this).attr('place')),
-      destination:formatLatlng($(this).attr('dest')),
+      origin:{placeId: $(this).attr('place')},
+      destination:{placeId: $(this).attr('dest')},
       travelMode: google.maps.TravelMode.WALKING
     };
+    
     directionsService.route(request, function(result, status) {
+      
       if (status == google.maps.DirectionsStatus.OK) {
+
         directionsDisplay.setDirections(result);
         directionsDisplay.setMap(map);
         directionsDisplay.setPanel(panel);
+      }else{
+        console.log(status); 
       }
     });
     directionsDisplay.setMap(map);

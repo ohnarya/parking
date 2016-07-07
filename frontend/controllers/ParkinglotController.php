@@ -208,18 +208,17 @@ class ParkinglotController extends Controller
 
         $url = Yii::$app->params['googleDM'];
         $param['units']        = 'imperial';
-        $param['mode']       = 'walking';
-        $param['avoid']     = 'indoor';
+        $param['mode']         = 'walking';
+        $param['avoid']        = 'indoor';
         $param['key']          = getenv('GOOGLE_KEY');
-        $d = Json::decode($destplace);
-        $param['destinations'] = $d['lat'].','.$d['lng'];  
+        $param['destinations'] = "place_id:".$destplace;  
         
         // generate URL to communicate to GoogleMAP
         $params = http_build_query($param);
         
         foreach($list as $k => $l){
-            $o = Json::decode($l['place']);
-            $param['origins'] = $o['lat'].','.$o['lng'];
+            
+            $param['origins'] ="place_id:".$l['place'];
             
             // generate URL to communicate to GoogleMAP
             $params = http_build_query($param);
@@ -229,7 +228,7 @@ class ParkinglotController extends Controller
             $result = Json::decode($result);
             
             if($result['status']==='OK'){
-              
+                $list[$k]['destination'] = $destplace;
                 $list[$k]['distance'] = $result['rows'][0]['elements'][0]['distance'];
                 $list[$k]['time']     = $result['rows'][0]['elements'][0]['duration'];
             }else{

@@ -85,8 +85,7 @@ function geocodeLatLng(location) {
         var addr = results[0].formatted_address.split(",");
         addr.pop();addr.pop();
         $("div#address").find("input").val(addr.join(','));
-        $("div#place").find("input").val(JSON.stringify(location));
-        
+        $("div#place").find("input").val(results[0].place_id);
       } else {
         window.alert('No results found');
       }
@@ -119,14 +118,5 @@ function writeInfo(info){
     content:info
     });
   infowindow.open(map,marker);  
-}
-
-
-function formatLatlng(latlng)  
-{
-    var latlngStr = latlng.split(',', 2);
-    var latStr = latlngStr[0].split(':',2);
-    var lngStr = latlngStr[1].split(':',2);
-    return {lat: parseFloat(latStr[1]), lng: parseFloat(lngStr[1])};
 }
 
