@@ -1,7 +1,7 @@
-function storeHistory(){
+function storeHistory(lot){
   console.log("storehistory");
   var dest = $("#destination").val();
-  var lot  = $("#parkinglotsearchform-permit").val(); 
+  // var lot  = $("#parkinglotsearchform-permit").val(); 
   
   $.post({url:'/parkinglot/frontend/web/index.php?r=parkinglot%2Fstore', 
           data:{'dest': dest, 'lot':lot},

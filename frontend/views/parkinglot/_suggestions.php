@@ -37,7 +37,7 @@ use yii\helpers\Url;
         <?php
             echo Html::button('select',
                          ['id'=>'store-history', 'class'=>'btn btn-danger btn-xs',
-                         'onclick'=>'storeHistory()'
+                         'onclick'=>'storeHistory("'.$model['lot']['permit'].'")'
                          ] 
                     );  
         ?>

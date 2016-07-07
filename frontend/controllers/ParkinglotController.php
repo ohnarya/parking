@@ -180,7 +180,7 @@ class ParkinglotController extends Controller
             }
 
             // most often
-            if(is_array($history) && (!isset($cnt) || ( in_array($r['permit'], $history) && $cnt < $history[$r['permit']]))){
+            if( (is_array($history) && !isset($cnt)) || (array_key_exists($r['permit'], $history) && $cnt < $history[$r['permit']])){
                 $mostoften = $r;
                 $cnt = $history[$r['permit']];
             }
