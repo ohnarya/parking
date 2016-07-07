@@ -13,7 +13,7 @@ class DestinationController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Destination::find()->where(['active'=>true]),
+            'query' => Destination::find()->where(['active'=>true])->orderBy('name'),
             'pagination' => [
                 'pageSize' => 20,
             ],

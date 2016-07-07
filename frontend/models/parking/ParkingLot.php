@@ -36,7 +36,7 @@ class ParkingLot extends ActiveRecord
             [['permit','place'], 'trim'],
             [['permit','address'], 'required'],
             ['permit', 'string', 'min' => 2, 'max' => 20],
-            [['night','summer','football','construction','address'],'safe'],
+            [['night','summer','football','construction','address','easyparking','easyexit'],'safe'],
         ];
     }
     public static function getPlace($lat, $lng)

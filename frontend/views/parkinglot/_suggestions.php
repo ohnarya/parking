@@ -13,7 +13,7 @@ use yii\helpers\Url;
                 echo '<i class="fa fa-users" aria-hidden="true"></i> Most Often Visited';
                 
             }else if($model['category'] === 'preferable') {
-                echo '<i class="fa fa-users" aria-hidden="true"></i> Most Preferable';
+                echo '<i class="fa fa-heart" aria-hidden="true"></i> Most Preferable';
             }
             
             ?>

@@ -80,12 +80,12 @@ function geocodeLatLng(location) {
 
   geocoder.geocode({'location': location}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
-      if (results[1]) {
+      if (results[1]){
         
         var addr = results[0].formatted_address.split(",");
         addr.pop();addr.pop();
         $("div#address").find("input").val(addr.join(','));
-        $("div#place").find("input").val(results[0].place_id);
+        $("div#place").find("input").val(JSON.stringify(location));
       } else {
         window.alert('No results found');
       }

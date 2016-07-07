@@ -27,8 +27,10 @@ $('#parkinglotsearchform-time').on('dblclick',function(event){
 });
 
 $('.show-map').on('click',function(event){
-  myLatLng =  formatLatlng($(this).attr('place'));
+  myLatLng = JSON.parse($(this).attr('place'));
+
   info = $(this).parent().siblings(':first').next().text();
+  
   setMaker(myLatLng,info);
 
 });
@@ -49,8 +51,8 @@ $('.lot-suggestion').on('click',function(){
     directionsService = new google.maps.DirectionsService();
 
     var request = {
-      origin:{placeId: $(this).attr('place')},
-      destination:{placeId: $(this).attr('dest')},
+      origin:JSON.parse($(this).attr('place')),
+      destination:JSON.parse( $(this).attr('dest')),
       travelMode: google.maps.TravelMode.WALKING
     };
     

@@ -23,7 +23,7 @@ $form = ActiveForm::begin([
         <div class='padding-sm-horizontal'>
             <h3><?= ($model->isNewRecord)? 'Create' : 'Update' ?> Parking Lot Information </h3>
         </div>
-        <hr>
+        <br>
         <div class='padding-sm-horizontal'>
             <p>&bull; Parking Lot Information </p>
         </div>
@@ -79,6 +79,26 @@ $form = ActiveForm::begin([
                                                     ]]); ?>              
         </div>
         <br>
+        
+        <div class='padding-sm-horizontal'>
+            <p>&bull; Parking Lot Preference </p>
+        </div>    
+        <div class="col-md-3">
+        <?= $form->field($model, 'easyparking')
+                 ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
+                                                      'handleWidth'=>20,
+                                                      'onText'=>'Yes',
+                                                      'offText'=>'No'
+                                                    ]]); ?>
+        </div>
+        <div class="col-md-3">
+        <?= $form->field($model, 'easyexit')
+                 ->widget(SwitchInput::classname(), [ 'pluginOptions'=>[
+                                                      'handleWidth'=>20,
+                                                      'onText'=>'Yes',
+                                                      'offText'=>'No'
+                                                    ]]); ?>              
+        </div>        
         <div class="col-md-12">
         <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'parkinglot-save-button',
                                   'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>

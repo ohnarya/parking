@@ -19,7 +19,7 @@ class ParkinglotController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Parkinglot::find()->where(['active'=>true]),
+            'query' => Parkinglot::find()->where(['active'=>true])->orderBy('permit'),
             'pagination' => [
                 'pageSize' => 20,
             ],
@@ -124,31 +124,31 @@ class ParkinglotController extends Controller
         // calculate  closest distance and shortest duration
         $suggestions = $this->calculate($list, Json::decode($destination['history']));
         
-        // $s = $this->preferable($list, $lotresults, $condition);
-        // if($s) $suggestions[] = $s;
+        $s = $this->preferable($list, $condition);
+        if($s) $suggestions[] = $s;
         
         return $suggestions;
         
     }
-    private function preferable($list, $results, $condition)
+    private function preferable($list, $condition)
     {
 
         $points = [];
         $user = Users::findOne(Yii::$app->user->identity->id);
         $history = Json::decode($user['history'])[$condition['destination']];
-        if(!$history) return;
-        
+       
         // calculate scores based on preference
         foreach($list as $l){
+          
             if($condition['easyparking'] && $l['easyparking']) $points[$l['permit']]++;
             if($condition['easyexit'] && $l['easyexit']) $points[$l['permit']]++;
             
             // myhistory is only for login users
-            if(!Yii::$app->user->isGuest && isset($history) && $history[$l['permit']]){
+            if($condition['myhistory'] && !Yii::$app->user->isGuest && isset($history) && $history[$l['permit']]){
                 $points[$l['permit']] = $points[$l['permit']] + $history[$l['permit']];
             }
         }
-        
+         
         // get the best score
         foreach($points as $p => $score){
             if(!isset($preferable) || $preferable['score'] < $score){
@@ -158,13 +158,13 @@ class ParkinglotController extends Controller
         }
         
         $suggestion['category']='preferable';
-        foreach($results as $r){
+        foreach($list as $r){
             if($r['permit'] === $preferable['permit']){
                 $suggestion['lot'] = $r; break;
             }
         }
 
-        return $suggestions;
+        return $suggestion;
         
     }
     private function calculate($list, $history)
@@ -211,18 +211,20 @@ class ParkinglotController extends Controller
         $param['mode']         = 'walking';
         $param['avoid']        = 'indoor';
         $param['key']          = getenv('GOOGLE_KEY');
-        $param['destinations'] = "place_id:".$destplace;  
+        $d = Json::decode($destplace);
+        $param['destinations'] = $d['lat'].','.$d['lng'];  
         
-        // generate URL to communicate to GoogleMAP
-        $params = http_build_query($param);
+        // // generate URL to communicate to GoogleMAP
+        // $params = http_build_query($param);
         
         foreach($list as $k => $l){
             
-            $param['origins'] ="place_id:".$l['place'];
+            $o = Json::decode($l['place']);
+            $param['origins'] = $o['lat'].','.$o['lng'];
             
             // generate URL to communicate to GoogleMAP
             $params = http_build_query($param);
-            
+
             // get the result from GoogleMap
             $result = file_get_contents($url.$params);
             $result = Json::decode($result);
@@ -248,7 +250,7 @@ class ParkinglotController extends Controller
 
         //weekends?
         if(date('w', $date)==0 || date('w',$date)==6){
-            $weekends = ParkingLot::find()->select(['permit','address','place'])->where(['construction'=>false,'active'=>true])->asArray()->all(); 
+            $weekends = ParkingLot::find()->select(['permit','address','place','easyparking','easyexit'])->where(['construction'=>false,'active'=>true])->asArray()->all(); 
             foreach($weekends as $w){
                 $list[$w['permit']] = $w;
                 
@@ -256,7 +258,7 @@ class ParkinglotController extends Controller
         }else{
             // summer parking?
             if(isset($date) && in_array(date('m',$date), ['06','07','08'])){
-                $summer = ParkingLot::find()->select(['permit','address','place'])->where(['construction'=>false,'active'=>true])
+                $summer = ParkingLot::find()->select(['permit','address','place','easyparking','easyexit'])->where(['construction'=>false,'active'=>true])
                          ->andWhere(['summer'=>true])->asArray()->all();
                 foreach($summer as $su){
                     $list[$su['permit']] = $su;
@@ -265,7 +267,7 @@ class ParkinglotController extends Controller
     
             // night parking?
             if($time>=17 || $time<=8){
-                $night = ParkingLot::find()->select(['permit','address','place'])->where(['construction'=>false,'active'=>true])
+                $night = ParkingLot::find()->select(['permit','address','place','easyparking','easyexit'])->where(['construction'=>false,'active'=>true])
                          ->andWhere(['night'=>true])->asArray()->all();
                 foreach($night as $n){
                     $list[$n['permit']] = $n;
@@ -274,7 +276,7 @@ class ParkinglotController extends Controller
         }
         // add user's permit
         if(isset($perm) && $perm!='' ){
-            $list[$perm] = ParkingLot::find()->select(['permit','address','place'])->where(['permit'=>$perm])->asArray()->one();
+            $list[$perm] = ParkingLot::find()->select(['permit','address','place','easyparking','easyexit'])->where(['permit'=>$perm])->asArray()->one();
         }
         return array_values($list);
     }    
