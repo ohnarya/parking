@@ -148,10 +148,11 @@ class ParkinglotController extends Controller
                 $points[$l['permit']] = $points[$l['permit']] + $history[$l['permit']];
             }
         }
-         
+       
         // get the best score
         foreach($points as $p => $score){
-            if(!isset($preferable) || $preferable['score'] < $score){
+            if(!isset($preferable) || $preferable['score'] <= $score ){
+                if( $preferable['score'] == $score && $list[$preferable['permit']]['distance']['value'] < $list[$p]['distance']['value']) continue;
                 $preferable['permit'] = $p;
                 $preferable['score'] = $score;
             }
@@ -170,7 +171,7 @@ class ParkinglotController extends Controller
     private function calculate($list, $history)
     {
         $suggestions = [];
-        $cnt;
+        $cnt=0;
         foreach($list as $r){
            
             // closest
@@ -180,7 +181,7 @@ class ParkinglotController extends Controller
             }
 
             // most often
-            if( (is_array($history) && !isset($cnt)) || (array_key_exists($r['permit'], $history) && $cnt < $history[$r['permit']])){
+            if( $history && array_key_exists($r['permit'], $history) && $cnt < $history[$r['permit']] ){
                 $mostoften = $r;
                 $cnt = $history[$r['permit']];
             }
@@ -199,9 +200,7 @@ class ParkinglotController extends Controller
     }
     
     /**********************************************
-     * 
      * get distance and duration info from Google
-     * 
      * ********************************************/
     private function getDataFromGoogle($list, $destplace)
     {
