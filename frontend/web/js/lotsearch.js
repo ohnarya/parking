@@ -1,7 +1,7 @@
-function storeHistory(){
+function storeHistory(lot){
   console.log("storehistory");
   var dest = $("#destination").val();
-  var lot  = $("#parkinglotsearchform-permit").val(); 
+  // var lot  = $("#parkinglotsearchform-permit").val(); 
   
   $.post({url:'/parkinglot/frontend/web/index.php?r=parkinglot%2Fstore', 
           data:{'dest': dest, 'lot':lot},
@@ -27,8 +27,10 @@ $('#parkinglotsearchform-time').on('dblclick',function(event){
 });
 
 $('.show-map').on('click',function(event){
-  myLatLng =  formatLatlng($(this).attr('place'));
+  myLatLng = JSON.parse($(this).attr('place'));
+
   info = $(this).parent().siblings(':first').next().text();
+  
   setMaker(myLatLng,info);
 
 });
@@ -45,18 +47,24 @@ $('.lot-suggestion').on('click',function(){
     marker.setMap(null);
     
   }else{
+
     directionsService = new google.maps.DirectionsService();
-    
+
     var request = {
-      origin: formatLatlng($(this).attr('place')),
-      destination:formatLatlng($(this).attr('dest')),
+      origin:JSON.parse($(this).attr('place')),
+      destination:JSON.parse( $(this).attr('dest')),
       travelMode: google.maps.TravelMode.WALKING
     };
+    
     directionsService.route(request, function(result, status) {
+      
       if (status == google.maps.DirectionsStatus.OK) {
+
         directionsDisplay.setDirections(result);
         directionsDisplay.setMap(map);
         directionsDisplay.setPanel(panel);
+      }else{
+        console.log(status); 
       }
     });
     directionsDisplay.setMap(map);
