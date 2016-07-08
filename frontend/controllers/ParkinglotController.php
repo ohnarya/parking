@@ -151,20 +151,18 @@ class ParkinglotController extends Controller
        
         // get the best score
         foreach($points as $p => $score){
-            if(!isset($preferable) || $preferable['score'] <= $score ){
-                if( $preferable['score'] == $score && $list[$preferable['permit']]['distance']['value'] < $list[$p]['distance']['value']) continue;
-                $preferable['permit'] = $p;
+            if(!isset($preferable) || $preferable['score'] < $score ){
                 $preferable['score'] = $score;
+                $preferable['permit'] = $p;
             }
         }
-        
+
         $suggestion['category']='preferable';
         foreach($list as $r){
             if($r['permit'] === $preferable['permit']){
                 $suggestion['lot'] = $r; break;
             }
         }
-
         return $suggestion;
         
     }
