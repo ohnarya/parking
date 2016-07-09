@@ -37,23 +37,35 @@ AppAsset::register($this);
         ],
     ]);
 
-    if(!Yii::$app->user->isGuest){
-        $leftItems = [
-            ['label' => 'Parking Lot', 'items'=>[ ['label'=>'Search Parking Lot', 'url' => Url::to(['/parkinglot/search'])],
-                                                  ['label'=>'Manage Parking Lot', 'url' => Url::to(['/parkinglot/index'])],
-                                                  ['label'=>'Manage Destination', 'url' => Url::to(['/destination/index'])],
-                                                ]],
-            ['label' => 'Search Item', 'url' => ['/search/index']],
-            ['label' => 'Setting', 'url' => ['/site/setting']]
-        ];
+    // set the menu according to the roles of the login-user    
+    $parkingSubmemuItems = [ 
+               ['label'=>'Search Parking Lot', 'url' => Url::to(['/parkinglot/search'])],
+            ]; 
 
+    if (\Yii::$app->user->can('manageParkingLots')) {
+        array_push($parkingSubmemuItems,['label'=>'Manage Parking Lots', 'url' => Url::to(['/parkinglot/index'])
+                                        ]);
+    }
+    if (\Yii::$app->user->can('manageDestinations')) {
+        array_push($parkingSubmemuItems,['label'=>'Manage Destinations', 'url' => Url::to(['/destination/index'])
+                                        ]);
+    }
+    
+    
+    if (\Yii::$app->user->can('settingMyAccount')) {
+        array_push($parkingSubmemuItems,['label'=>'Setting My Account', 'url' => Url::to(['/site/setting'])
+                                        ]);
+    }
+    
+    $leftItems = [
+        ['label' => 'Parking Lot', 'items'=> $parkingSubmemuItems],
+        ['label' => 'Search Item', 'url' => ['/search/index']],
+    ];
+    
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => $leftItems,
-    ]);    
-    
-    }
-
+    ]);  
     if (Yii::$app->user->isGuest) {
         $rightItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $rightItems[] = ['label' => 'Login', 'url' => ['/site/login']];
