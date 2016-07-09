@@ -23,7 +23,7 @@ $this->title = 'My Account';
            <?= $this->render("_lotinfo",['form'=>$form,'model'=>$model,'parkinglot'=>$parkinglot])?>
            <br>
              <div class= "pull-right">
-                 <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'name' => 'setting-button']) ?>
+                 <?= Html::submitButton('Save My Setting', ['class' => 'btn btn-primary', 'name' => 'setting-button']) ?>
             </div>         
         </div>
 
