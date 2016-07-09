@@ -50,13 +50,29 @@ class SignupForm extends Model
         if (!$this->validate()) {
             return null;
         }
-        
+           
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
+        if($user->username === 'admin'){
+            $user->level = User::ADMIN_LEVEL;
+        }else{
+            $user->level = User::USER_LEVEL;    
+        }
         
-        return $user->save() ? $user : null;
+        if(!$user->save()) return null;
+        
+        /*
+        * assign a role to log-in user.
+        */
+        $auth = \Yii::$app->authManager;           
+        if($user->level === User::USER_LEVEL){
+            $auth->assign($auth->getRole('user'), $user->getId());
+        }else if($user->level === User::ADMIN_LEVEL){
+            $auth->assign($auth->getRole('admin'), $user->getId());                    
+        }
+        return $user; 
     }
 }

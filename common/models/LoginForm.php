@@ -57,24 +57,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            $user = $this->getUser();
-
-            if(Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0)){
-                /*
-                * assign a role to log-in user.
-                */
-                $auth = Yii::$app->authManager;           
-
-                if($user->level === User::USER_LEVEL){
-                    $auth->assign($auth->getRole('user'), $user->getId());
-                }else if($user->level === User::ADMIN_LEVEL){
-                    $auth->assign($auth->getRole('admin'), $user->getId());                    
-                }
-                return true;                
-            }else{
-                return false;
-            }
-           
+           return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         } else {
             return false;
         }
