@@ -30,23 +30,25 @@ class m130524_201442_init extends Migration
             'updated_at'           => $this->integer()->notNull(),
         ], $tableOptions);
         
-        // $this->insert('TB_USER',['username'=>'admin',
-        //                          'auth_key'=>'wb0xstMoA1tm5jY8j5xtdTIXsyZQ98EP',
-        //                          'password_hash'=>'$2y$13$4t8zlHs4i0kpzuPhfQ8.6.pMTYkC5W6oVKlgoBlf/WNHg8xbJ8nXm',
-        //                          'email'=>'admin@gmail.com',
-        //                          'status'=>'20',
-        //                          'created_at'=>1466698045,
-        //                          'updated_at'=>1466698045
-        //                          ]);
+        $this->insert('TB_USER',['username'=>'admin',
+                                 'auth_key'=>'vmE63l-oAZFRabHk1ZNDhHm7vlFMv3nf',
+                                 'password_hash'=>'$2y$13$b/ivuBUmlzAGhj0PQYEVvO6oXk9QspKuLHmoPafTHTgRNrBiRuOgq',
+                                 'email'=>'admin@gmail.com',
+                                 'level'=>'2',
+                                 'status'=>'10',
+                                 'created_at'=>1468097874,
+                                 'updated_at'=>1468097874
+                                 ]);
                                  
-        // $this->insert('TB_USER',['username'=>'user',
-        //                          'auth_key'=>'-EUJ2F7fCl-8A4mlxy5s_Usptlnksy71',
-        //                          'password_hash'=>'$2y$13$1CIo6uc4/fsb9Fu5uk0A6OVHc.CDIHW8mOU.YCTPonU2BFtggcloW',
-        //                          'email'=>'user@gmail.com ',
-        //                          'status'=>'10',
-        //                          'created_at'=>1466698045,
-        //                          'updated_at'=>1466698045
-        //                          ]);
+        $this->insert('TB_USER',['username'=>'user',
+                                 'auth_key'=>'-EUJ2F7fCl-8A4mlxy5s_Usptlnksy71',
+                                 'password_hash'=>'$2y$13$1CIo6uc4/fsb9Fu5uk0A6OVHc.CDIHW8mOU.YCTPonU2BFtggcloW',
+                                 'email'=>'user@gmail.com ',
+                                 'level'=>'1',
+                                 'status'=>'10',
+                                 'created_at'=>1466698045,
+                                 'updated_at'=>1466698045
+                                 ]);
                                  
     }
 
