@@ -19,25 +19,17 @@ $form = ActiveForm::begin([
     'method' =>'POST',
     'type' => ActiveForm::TYPE_VERTICAL,
 ]) ?> 
-
 <div  class="col-md-6">
-    <div class='row margin-sm'>
-        <div class='col-md-12'>
-            <h3><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h3>
-            <div class="col-md-12 pull-right">
-            <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'destination-save-button',
-                                      'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>
-            </div>              
-        </div>
-        <hr>
+    <h1><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h1>
 
+    <div class='row'>
         <div class="col-md-4">
         <?= $form->field($model, 'name')
                  ->input('permit',['class'=>'form-control']); ?>  
         </div>
         <div class="col-md-12" id="address">
         <?= $form->field($model, 'address')
-                 ->input('permit',['class'=>'form-control']); ?>             
+                 ->input('permit',['class'=>'form-control','readonly' => true])->hint('This field will be set an address when the map is clicked.'); ?>             
         </div>
         <div class="col-md-12" id="place">
         <?= $form->field($model, 'place')
@@ -45,6 +37,21 @@ $form = ActiveForm::begin([
         </div>
         <br>
     </div>    
+    <div class='row'>
+        <div class="col-md-12 pull-right">
+        <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'destination-save-button',
+                                  'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>
+        </div>              
+    </div>
+    <br><br>
+    <div class='row'>
+        <div class="col-md-12">
+<pre class="site-helper">
+When a location is clicked on the map, its <strong>address</strong> will be automatically filled.
+This uses <strong>Google Map APIs - geocoder</strong>.
+</pre>        
+        </div>
+    </div>
 </div>
 <?php ActiveForm::end() ?>   
 <div id="googleMap" class="col-md-6  map-container" clickable="1"></div>

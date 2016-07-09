@@ -1,4 +1,16 @@
 /**************************************************/
+.site-helper {
+    border-radius: 3px;    
+    border-left: 7px solid #660000;
+    background-color: #003333;
+    font-size: small;
+    color:white;
+}
+.hightlighted-word {
+    font-weight: bold;
+    border-bottom: 1px dashed #999;    
+}
+/**************************************************/
 .alert {
      width:100%;
      min-height:40px;
@@ -65,6 +77,13 @@
     border : 1px solid black;
     border-radius: 5px;    
 }
+/*************************************/
+form div.required label.control-label:after {
+  content:" * ";
+  color:red;
+}
+
+
 html,
 body {
     height: 100%;

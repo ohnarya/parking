@@ -5,7 +5,10 @@ var marker;
 var infowindow;
 var directionsService;
 var directionsDisplay;
-
+/*
+1. Initialize Google Map
+2. register necessary elements to manage Map, such as LatLng, geocoder, marker, infowindow, directionDisplay, directionService
+*/
 function initialize(place)
 {
   myLatLng =  {lat: parseFloat(30.61954954005045), lng: parseFloat(-96.3371479511261)};

@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\SwitchInput;
+$this->title = 'Parking Lot Information';
 ?>
 
 <?php
@@ -19,32 +20,29 @@ $form = ActiveForm::begin([
 ]) ?> 
 
 <div  class="col-md-6">
-    <div class='row margin-sm'>
-        <div class='padding-sm-horizontal'>
-            <h3><?= ($model->isNewRecord)? 'Create' : 'Update' ?> Parking Lot Information </h3>
+    <h1><?= ($model->isNewRecord)? 'Create' : 'Update' ?> <?=$this->title?> </h1><br>
+
+    <div class='row'>
+        <div class="col-md-12">
+            <h4>&bull; Parking Lot Information </h4>
         </div>
-        <br>
-        <div class='padding-sm-horizontal'>
-            <p>&bull; Parking Lot Information </p>
-        </div>
-        <!--<div class="col-md-6">-->
-        <?php // $form->field($model, 'symbol')->input('symbol',['class'=>'form-control']); ?>       
-        <!--</div>-->
         <div class="col-md-3">
         <?= $form->field($model, 'permit')
                  ->input('permit',['class'=>'form-control']); ?>  
         </div>
         <div class="col-md-9" id="address">
         <?= $form->field($model, 'address')
-                 ->input('address',['class'=>'form-control']); ?>  
+                 ->input('address',['class'=>'form-control','readonly' => true])->hint('This field will be set  an address when the map is clicked.'); ?>  
         </div>
         <div id="place">
         <?= $form->field($model, 'place')
                  ->hiddenInput(['class'=>'form-control'])->label(false); ?>  
         </div>
+    </div>
         
-        <div class='padding-sm-horizontal'>
-            <p>&bull; Parking Lot Status </p>
+    <div class='row'>        
+        <div class="col-md-12">
+            <h4>&bull; Parking Lot Status </h4>
         </div>
         <div class="col-md-3">
         <?= $form->field($model, 'night')
@@ -78,10 +76,11 @@ $form = ActiveForm::begin([
                                                       'offText'=>'No'
                                                     ]]); ?>              
         </div>
-        <br>
-        
-        <div class='padding-sm-horizontal'>
-            <p>&bull; Parking Lot Preference </p>
+    </div>
+    <br>
+    <div class='row'>
+        <div class='col-md-12'>
+            <h4>&bull; Parking Lot Preference </h4>
         </div>    
         <div class="col-md-3">
         <?= $form->field($model, 'easyparking')
@@ -103,6 +102,25 @@ $form = ActiveForm::begin([
         <?= Html::submitButton($model->isNewRecord?'Create':'Update', ['id'=>'parkinglot-save-button',
                                   'class' => 'btn pull-right '.($model->isNewRecord?'btn-primary':'btn-success')]); ?>
         </div>                      
+    </div>   
+    <br><br>
+    <div class='row'>
+        <div class="col-md-12">
+<pre class="site-helper">
+&bull; Parking Lot Status :    
+    <span class='hightlighted-word'>Night</span> : a parking lot is available at night time, from 17:00 to 8:00 next day.
+    <span class='hightlighted-word'>Summer</span> : a parking lot is available during summer, in June, July, and August.
+    <span class='hightlighted-word'>Football</span> : a parking lot is not available when the school has a football home game.
+    <span class='hightlighted-word'>Construction</span> : a parking lot is not available due to the construction.
+
+&bull; Parking Lot Preferences :    
+    <span class='hightlighted-word'>Easyparking</span> : a parking lot is easy to park.
+    <span class='hightlighted-word'>Easyexit</span> : a parking lot is easy to exit.
+    
+&bull; When a location is clicked on the map, its <strong>address</strong> will be automatically filled.
+  This uses <span class='hightlighted-word'>Google Map APIs - geocoder</span>.
+</pre>        
+        </div>
     </div>    
 </div>
 <?php ActiveForm::end() ?>   
