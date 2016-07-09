@@ -1,14 +1,16 @@
 <?php
 use kartik\widgets\SwitchInput;
 ?>
-<div class="col-md-12">
-    <h3>My Parking Lot</h3>
-</div>
-<div class="col-md-12">
+
+<h4>&bull; My Parking Permit</h4>
+
+
 <?= $form->field($model, 'permit')
          ->dropdownList($parkinglot,['class'=>'form-control','prompt'=>'Select Permit..'
                                          ]); ?>        
-</div>
+
+<br>
+<h4>&bull; My Parking Preferences</h4>
 <div class="col-md-4">
         <?= $form->field($model, 'easyparking')->checkbox();?>             
 </div>

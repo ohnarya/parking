@@ -83,6 +83,7 @@ class ParkinglotController extends Controller
     
     public function actionSearch()
     {
+        date_default_timezone_set('America/Chicago');         
         $model = new ParkinglotSearchForm();
         $user = Users::findOne(Yii::$app->user->identity->id);
 

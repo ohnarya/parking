@@ -9,7 +9,7 @@ use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use frontend\models\parking\ParkingLot;
 
-$this->title='Manage Parking Lot';
+$this->title='Manage Parking Lots';
 ?>
 
 <?php
@@ -58,28 +58,39 @@ $gridColumns = [
 ],    
 ];
 ?>
-<div class='col-md-12'>
-    <h3 style='text-shadow: 2px 2px 4px'>Parking Lot Information...</h3>
-</div>
-<div  class="col-md-6">
-    <div class='row margin-sm'>
+<div  class="col-md-6 col-sm-12">
+    <h1><?= Html::encode($this->title) ?></h1><br>
+  
+    <div class='row'>
+        <div class="col-md-12">
+            <?php
+                echo GridView::widget([
+                    'dataProvider'=> $dataProvider,
+                    // 'filterModel' => $parkinglot,
+                    'columns' => $gridColumns,
+                    'responsive'=>true,
+                    'hover'=>true
+                ]);
+            ?>
+        </div>
+    </div>
+    <div class='row'>
+        <div class="col-md-12">
         <?= Html::a('Add a Parking Lot', Url::to(['parkinglot/view']), 
                                   ['id'   =>'search-button',
                                    'class'=>'btn btn-primary pull-right']); ?>
-         
+        </div> 
+    </div> 
+    <br><br>
+    <div class='row'>
+        <div class="col-md-12">
+<pre class="site-helper">
+<strong><i class="fa fa-map-pin" aria-hidden="true"></i></strong> : <span class='hightlighted-word'>points</span> to the location on the map.
+<strong><i class="fa fa-pencil" aria-hidden="true"></i></strong> : <span class='hightlighted-word'>shows</span> detailed information of the selected destination.
+<strong><i class="fa fa-trash" aria-hidden="true"></i></strong> : <span class='hightlighted-word'>deletes</span> the destination.
+</pre>        
+        </div>
     </div>    
-    <div class='row margin-sm'>
-        <?php
-            echo GridView::widget([
-                'dataProvider'=> $dataProvider,
-                // 'filterModel' => $parkinglot,
-                'columns' => $gridColumns,
-                'responsive'=>true,
-                'hover'=>true
-            ]);
-        ?>
-    </div>
-
 </div>
 <div id="googleMap" class="col-md-6  map-container" clickable="0"></div>
 

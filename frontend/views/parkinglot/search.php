@@ -13,16 +13,12 @@ use kartik\widgets\TimePicker;
 use kartik\widgets\SwitchInput;
 use frontend\models\parking\ParkinglotSearchForm;
 
-date_default_timezone_set('America/Chicago'); 
 $this->title='Search Parking Lot';
-$model->date = date('Y/m/d');
-$model->time = date('H:i:s');
 ?>
 <div  class="col-md-6">
-    <div>
-        <h3>Search Parking Lot...</h3>
-    </div>  
-    <div class='row margin-sm'>
+    <h1><?= Html::encode($this->title) ?></h1><br>
+    <h4>&bull; Search Conditions</h4>
+    <div class='row'>
         <?php
         $form = ActiveForm::begin([
             'id' => 'search-form',
@@ -56,10 +52,12 @@ $model->time = date('H:i:s');
         </div>   
         <br>
         <br>
-        <br> 
+        
     </div>
-    <div class='row margin-sm'>
-        <h3>Parking Preference</h3>
+    <hr> 
+    <h4>&bull; Parking Lot Preference</h4>
+    <div class='row'>
+        
         <div class="col-md-4">
                 <?= $form->field($model, 'easyparking')->checkbox();?>             
         </div>
@@ -72,12 +70,11 @@ $model->time = date('H:i:s');
         <br>
         <br>
         <br>
-        <div>
-            <?= Html::submitButton('Search', ['id'=>'search-button',
-                                      'class' => 'btn btn-primary']); ?>
-        </div>
-    </div>
     
+    </div>
+    <?= Html::submitButton('Search', ['id'=>'search-button',
+                          'class' => 'btn btn-primary']); ?>
+                          
     <?php ActiveForm::end() ?>                                 
     
     <?php if(isset($suggestionDP)){  ?>

@@ -20,15 +20,16 @@ $form = ActiveForm::begin([
     'type' => ActiveForm::TYPE_INLINE,
 ]) ?>
 <div class='col-md-6'>
-    <h3 style='text-shadow: 2px 2px 4px'>Search Items from Amazon.com..</h3>
+    <h1>Search Items from <?= Html::a('Amazon.com','http://www.amazon.com')?></h1>
 </div>
 <div class='col-md-5' style="margin-top:20px;">    
-    <b>Type a Query</b>  
+    <b>Type a Query </b>  
     <?= $form->field($model, 'query')
              ->input('query',['id'=>"search-input", 
                               'class'=>'form-control'])->label(false); ?>                                  
     <?= Html::submitButton('search', ['id'=>'search-button',
                                       'class' => 'btn btn-primary']); ?>
+    <small>(e.g., iphone5, samsung, etc.) </small>
 </div>
 
 
