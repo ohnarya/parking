@@ -20,7 +20,8 @@ class m130524_201442_init extends Migration
             'password_reset_token' => $this->string()->unique(),
             'email'                => $this->string()->notNull()->unique(),
             'history'              => $this->string(255),    
-            'status'               => $this->smallInteger()->notNull()->defaultValue(10),  //10 user , 20 admin
+            'level'                => $this->smallInteger()->notNull()->defaultvalue(1),   // 1: user, 2: admin
+            'status'               => $this->smallInteger()->notNull()->defaultValue(10),  // 0: deleted 1: active
             'permit'               => $this->string(50),
             'easyparking'          => $this->boolean()->notNull()->defaultValue(true),
             'easyexit'             => $this->boolean()->notNull()->defaultValue(true),
