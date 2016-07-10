@@ -13,7 +13,7 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'pgsql:host=127.0.0.1;dbname=parking',
+            'dsn' => 'pgsql:host=localhost;dbname=parking',
             'username' => 'ubuntu',
             'password' => 'parking',
         ],        
