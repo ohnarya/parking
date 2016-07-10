@@ -4,9 +4,6 @@ if (getenv("YII_ENV") == 'prod') {
     $dsn = 'pgsql:host='.$url['host'].';port='.$url['port'].';dbname='.substr($url["path"], 1);
     $username = $url["user"];
     $password = $url["pass"];
-echo("<pre>");
-print_r($dsn);
-echo("</pre>");
 } else {
     $dsn = 'pgsql:host=localhost;dbname=parking';
     $username = 'ubuntu';
