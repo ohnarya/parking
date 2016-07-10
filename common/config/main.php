@@ -5,7 +5,7 @@ if (getenv("YII_ENV") == 'prod') {
     $username = $url["user"];
     $password = $url["pass"];
 echo("<pre>");
-print_r($url);
+print_r($dsn);
 echo("</pre>");
 } else {
     $dsn = 'pgsql:host=localhost;dbname=parking';

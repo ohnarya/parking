@@ -83,34 +83,37 @@ class ParkinglotController extends Controller
     
     public function actionSearch()
     {
-        date_default_timezone_set('America/Chicago');         
-        $model = new ParkinglotSearchForm();
-        $user = Users::findOne(Yii::$app->user->identity->id);
+        echo("<pre>");
+        print_r(\Yii::$app->db);
+        echo("</pre>");
+        // date_default_timezone_set('America/Chicago');         
+        // $model = new ParkinglotSearchForm();
+        // $user = Users::findOne(Yii::$app->user->identity->id);
 
-        $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->all();
-        $destination = Destination::find()->select('name')->where(['active'=>true])->all();
-        $destarray = ArrayHelper::map($destination, 'name', 'name');
-        $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
+        // $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->all();
+        // $destination = Destination::find()->select('name')->where(['active'=>true])->all();
+        // $destarray = ArrayHelper::map($destination, 'name', 'name');
+        // $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
 
         
-        if($model->load(\Yii::$app->request->post())){
-            $suggestions=$this->reasoning($model); 
+        // if($model->load(\Yii::$app->request->post())){
+        //     $suggestions=$this->reasoning($model); 
             
-            $suggestionDP = new ArrayDataProvider([
-                    'allModels'=>$suggestions
-                ]);
-        }else{ // first loading
-            $model->permit = Json::decode($user->permit);   
-            $model->easyparking = $user->easyparking;
-            $model->easyexit = $user->easyexit;
-            $model->myhistory =$user->myhistory;
-        }
+        //     $suggestionDP = new ArrayDataProvider([
+        //             'allModels'=>$suggestions
+        //         ]);
+        // }else{ // first loading
+        //     $model->permit = Json::decode($user->permit);   
+        //     $model->easyparking = $user->easyparking;
+        //     $model->easyexit = $user->easyexit;
+        //     $model->myhistory =$user->myhistory;
+        // }
 
-        return $this->render('search',['model'=>$model,
-                                      'parkarray'=>$parkarray,
-                                      'destarray'=>$destarray,
-                                      'destination'=>$destination,
-                                      'suggestionDP'=>$suggestionDP]);         
+        // return $this->render('search',['model'=>$model,
+        //                               'parkarray'=>$parkarray,
+        //                               'destarray'=>$destarray,
+        //                               'destination'=>$destination,
+        //                               'suggestionDP'=>$suggestionDP]);         
     }
     protected function reasoning($condition)
     {
