@@ -47,7 +47,7 @@ $form = ActiveForm::begin([
     <div class='row'>
         <div class="col-md-12">
 <pre class="site-helper">
-When a location is clicked on the map, its <strong>address</strong> will be automatically filled.
+When a location is clicked on the map, its <strong>address</strong> will be filled.
 This uses <strong>Google Map APIs - geocoder</strong>.
 </pre>        
         </div>

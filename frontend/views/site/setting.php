@@ -10,7 +10,7 @@ $this->title = 'My Account';
 ?>  
 <div class="site-signup">
     <div class="row">
-        <div class="col-md-offset-4 col-md-4">
+        <div class="col-md-offset-3 col-md-6">
             <h1><?= Html::encode($this->title) ?></h1><br>
             <?php $form = ActiveForm::begin(['id' => 'setting-form',    
                                              'action' => Url::to(['site/settingsave']),
@@ -32,7 +32,7 @@ $this->title = 'My Account';
     
     <br>
     <div class="row">
-        <div class="col-md-offset-4 col-md-4">
+        <div class="col-md-offset-3 col-md-6">
             <h1>My Parking History</h1><br>
             <?php 
                 $history = Json::decode($model->history);
@@ -51,7 +51,10 @@ $this->title = 'My Account';
                 }
             ?>
         </div>
-        <div class="col-md-4">
+    </div>
+    <br><br>
+    <div class='row'>
+        <div class="col-md-offset-3 col-md-6">
 <pre class="site-helper">
 &bull; Parking Lot Preferences : 
   When searching the best suggestions for the parking lot, 
