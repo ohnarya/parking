@@ -1,4 +1,6 @@
 <?php
+$dbopts = parse_url(getenv('DATABASE_URL'));
+
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
@@ -13,9 +15,9 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'pgsql:host=localhost;dbname=parking',
-            'username' => 'ubuntu',
-            'password' => 'parking',
+            'dsn' => 'pgsql:host='.$dbopts["host"]. ';port=' . $dbopts["port"].';dbname='.ltrim($dbopts["path"],'/'),
+            'username' => $dbopts["user"],
+            'password' => $dbopts["pass"],
         ],        
     ],
 ];
