@@ -29,7 +29,7 @@ $form = ActiveForm::begin([
                               'class'=>'form-control'])->label(false); ?>                                  
     <?= Html::submitButton('search', ['id'=>'search-button',
                                       'class' => 'btn btn-primary']); ?>
-    <small>(e.g., iphone5, samsung, etc.) </small>
+    <small>(e.g., iphone5 etc.) </small>
 </div>
 
 

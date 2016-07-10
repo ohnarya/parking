@@ -212,9 +212,6 @@ class ParkinglotController extends Controller
         $d = Json::decode($destplace);
         $param['destinations'] = $d['lat'].','.$d['lng'];  
         
-        // // generate URL to communicate to GoogleMAP
-        // $params = http_build_query($param);
-        
         foreach($list as $k => $l){
             
             $o = Json::decode($l['place']);

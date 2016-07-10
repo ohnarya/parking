@@ -65,6 +65,7 @@ class SearchController extends Controller
             "SignatureVersion" => "2",
             "Version"          => "2013-08-01"
         );
+
         foreach ($extraparams as $param => $value) {
             $params[$param] = $value;
         }
