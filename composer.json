@@ -25,7 +25,7 @@
         "ext-gd": "*",
         "kartik-v/yii2-mpdf": "dev-master",
         "kartik-v/yii2-widget-switchinput": "*",
-        "yiisoft/yii2-codeception": "*",
+        "herrera-io/silex-pdo": "^1.2"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
