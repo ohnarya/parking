@@ -12,7 +12,7 @@ $this->title = 'Login';
 ?>
 <div class="site-login">
     <div class="row">
-        <div class="col-lg-offset-4 col-lg-4">
+        <div class="col-lg-offset-3 col-lg-6">
             <h1><?= Html::encode($this->title) ?></h1>
         
             <br>
@@ -33,7 +33,7 @@ $this->title = 'Login';
     </div>
     <br>
     <div class="row">
-        <div class="col-lg-offset-4 col-lg-4">
+        <div class="col-lg-offset-3 col-lg-6">
 <pre class="site-helper">
 &bull; Default accounts : 
    <strong>Administrator - admin/111111 

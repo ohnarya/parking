@@ -8,6 +8,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\SwitchInput;
+
+
 $this->title = 'Parking Lot Information';
 ?>
 
@@ -24,7 +26,7 @@ $form = ActiveForm::begin([
 
     <div class='row'>
         <div class="col-md-12">
-            <h4>&bull; Parking Lot Information </h4>
+            <h4>&bull; Parking Lot Information </h4> 
         </div>
         <div class="col-md-3">
         <?= $form->field($model, 'permit')
@@ -107,15 +109,22 @@ $form = ActiveForm::begin([
     <div class='row'>
         <div class="col-md-12">
 <pre class="site-helper">
+&bull; Parking Lot Rules and Regulations :
+  A user can use a parking lot which the use has the permit of anytime.
+  Some parking lots are open to the public at night (17:00~8:00 next day).
+  Some parking lots are open to the public during Summer (June,July,and August).
+  Some parking lots are closed when the school has home-games even to the permit holders.
+  Some parking lots are close due to the construction.
+  
 &bull; Parking Lot Status :    
-    <span class='hightlighted-word'>Night</span> : a parking lot is available at night time, from 17:00 to 8:00 next day.
-    <span class='hightlighted-word'>Summer</span> : a parking lot is available during summer, in June, July, and August.
-    <span class='hightlighted-word'>Football</span> : a parking lot is not available when the school has a football home game.
-    <span class='hightlighted-word'>Construction</span> : a parking lot is not available due to the construction.
+  <span class='hightlighted-word'>Night</span> : available parking lots from 17:00 to 8:00 next day.
+  <span class='hightlighted-word'>Summer</span> : availiable parking lots in June, July, and August.
+  <span class='hightlighted-word'>Football</span> : unavailable parking lots when home-games hold.
+  <span class='hightlighted-word'>Construction</span> : unavailable parking lotsdue to construction.
 
 &bull; Parking Lot Preferences :    
-    <span class='hightlighted-word'>Easyparking</span> : a parking lot is easy to park.
-    <span class='hightlighted-word'>Easyexit</span> : a parking lot is easy to exit.
+  <span class='hightlighted-word'>Easyparking</span> : a parking lot is easy to park.
+  <span class='hightlighted-word'>Easyexit</span> : a parking lot is easy to exit.
     
 &bull; When a location is clicked on the map, its <strong>address</strong> will be automatically filled.
   This uses <span class='hightlighted-word'>Google Map APIs - geocoder</span>.

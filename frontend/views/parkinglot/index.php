@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use frontend\models\parking\ParkingLot;
-
+use yii\bootstrap\Modal;
 $this->title='Manage Parking Lots';
 ?>
 
@@ -59,7 +59,30 @@ $gridColumns = [
 ];
 ?>
 <div  class="col-md-6 col-sm-12">
-    <h1><?= Html::encode($this->title) ?></h1><br>
+    <h1><?= Html::encode($this->title) ?></h1>
+<?php
+Modal::begin([
+    'header' => '<h4>Parking Lot Rules and Regulations</h4>',
+    'headerOptions'=>['class'=>'bg-primary'],
+    'closeButton'=>[],
+    'toggleButton' => ['label' => '<i class="fa fa-car" aria-hidden="true"></i> parking rules','class'=>'btn-xs btn-danger pull-right'],
+    'footer'=> Html::a('close')
+]);
+?>
+
+&bull;A user can use a parking lot which the use has the permit of anytime.<br>
+&bull;Some parking lots are open to the public at night (17:00~8:00 next day).<br>
+&bull;Some parking lots are open to the public during Summer (June,July,and August).<br>
+&bull;Some parking lots are closed when the school has home-games.<br>
+&nbsp;- Even to the permit holders.<br>
+&bull;Some parking lots are close due to the construction.<br>
+
+<?php
+
+Modal::end();           
+?> 
+
+    <br>
   
     <div class='row'>
         <div class="col-md-12">
@@ -76,9 +99,11 @@ $gridColumns = [
     </div>
     <div class='row'>
         <div class="col-md-12">
+            
         <?= Html::a('Add a Parking Lot', Url::to(['parkinglot/view']), 
                                   ['id'   =>'search-button',
                                    'class'=>'btn btn-primary pull-right']); ?>
+        
         </div> 
     </div> 
     <br><br>
