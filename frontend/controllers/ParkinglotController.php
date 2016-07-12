@@ -2,10 +2,10 @@
 namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use frontend\models\parking\ParkingLot;
-// use frontend\models\parking\ParkingForm;
 use frontend\models\parking\ParkinglotSearchForm;
 use frontend\models\parking\LotResult;
 use frontend\models\destination\Destination;
@@ -16,8 +16,32 @@ use yii\helpers\Json;
 
 class ParkinglotController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['search', 'index','view','save','store','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['search','store'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['search','index','view','save','store','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }    
+
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('manageParkingLots')) return $this->goHome();
+        
         $dataProvider = new ActiveDataProvider([
             'query' => Parkinglot::find()->where(['active'=>true])->orderBy('permit'),
             'pagination' => [
@@ -28,6 +52,7 @@ class ParkinglotController extends Controller
     }
     public function actionView($id=null)
     {
+        if (!Yii::$app->user->can('manageParkingLots')) return $this->goHome();
         
         if(isset($id)){
             $model = ParkingLot::find()->where(['id'=>$id,'active'=>true])->one();
@@ -39,6 +64,8 @@ class ParkinglotController extends Controller
     
     public function actionSave($id=null)
     {
+        if (!Yii::$app->user->can('manageParkingLots')) return $this->goHome();
+        
         if(isset($id)){
             $model = ParkingLot::findOne($id);
         }else{
@@ -76,6 +103,8 @@ class ParkinglotController extends Controller
     }
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('manageParkingLots')) return $this->goHome();
+        
         $model = ParkingLot::findOne($id);
         $model->delete();
         return $this->redirect(Url::to(['parkinglot/index']));

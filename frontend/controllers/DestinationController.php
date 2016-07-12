@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use frontend\models\destination\Destination;
@@ -9,9 +10,27 @@ use yii\helpers\ArrayHelper;
 
 class DestinationController extends Controller
 {
-   
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index','view','save','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index','view','save','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }       
+
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('manageDestinations')) return $this->goHome();
+        
         $dataProvider = new ActiveDataProvider([
             'query' => Destination::find()->where(['active'=>true])->orderBy('name'),
             'pagination' => [
@@ -22,6 +41,7 @@ class DestinationController extends Controller
     }
     public function actionView($id=null)
     {
+        if (!Yii::$app->user->can('manageDestinations')) return $this->goHome();
         
         if(isset($id)){
             $model = Destination::find()->where(['id'=>$id,'active'=>true])->one();
@@ -33,6 +53,8 @@ class DestinationController extends Controller
     
     public function actionSave($id=null)
     {
+        if (!Yii::$app->user->can('manageDestinations')) return $this->goHome();
+        
         if(isset($id)){
             $model = Destination::findOne($id);
         }else{
@@ -45,6 +67,8 @@ class DestinationController extends Controller
     }
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('manageDestinations')) return $this->goHome();
+        
         $model = Destination::findOne($id);
         $model->delete();
         return $this->redirect(Url::to(['destination/index']));
