@@ -34,10 +34,10 @@ AppAsset::register($this);
         'brandUrl' => Yii::$app->homeUrl,
         'renderInnerContainer' => false,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse navbar-fixed-top col-md-12',
         ],
     ]);
-
+    
     // set the menu according to the roles of the login-user    
     $parkingSubmemuItems = [ 
                ['label'=>'Search Parking Lot', 'url' => Url::to(['/parkinglot/search'])],
@@ -62,7 +62,7 @@ AppAsset::register($this);
         ['label' => 'Parking Lot', 'items'=> $parkingSubmemuItems],
         ['label' => 'Search Item', 'url' => ['/search/index']],
     ];
-    
+        
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => $leftItems,
@@ -86,7 +86,7 @@ AppAsset::register($this);
         'items' => $rightItems,
     ]);
     NavBar::end();
-    ?>
+?>
 
     <div class="container-fluid">
         <div class="col-md-12 no-padding">
