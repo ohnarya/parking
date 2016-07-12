@@ -46,7 +46,7 @@ window.onload = loadScript;
 function loadScript()
 {
 
-  $.post({url:'/index.php?r=common%2Findex',  
+  $.post({url:'/parkinglot/frontend/web/index.php?r=common%2Findex',  
           data:{'id':'GOOGLE_KEY'},
           dataType: 'json'
     
