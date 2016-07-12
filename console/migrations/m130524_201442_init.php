@@ -40,15 +40,15 @@ class m130524_201442_init extends Migration
                                  'updated_at'=>1468097874
                                  ]);
                                  
-        $this->insert('TB_USER',['username'=>'user',
-                                 'auth_key'=>'-EUJ2F7fCl-8A4mlxy5s_Usptlnksy71',
-                                 'password_hash'=>'$2y$13$1CIo6uc4/fsb9Fu5uk0A6OVHc.CDIHW8mOU.YCTPonU2BFtggcloW',
-                                 'email'=>'user@gmail.com ',
-                                 'level'=>'1',
-                                 'status'=>'10',
-                                 'created_at'=>1466698045,
-                                 'updated_at'=>1466698045
-                                 ]);
+        // $this->insert('TB_USER',['username'=>'user',
+        //                          'auth_key'=>'-EUJ2F7fCl-8A4mlxy5s_Usptlnksy71',
+        //                          'password_hash'=>'$2y$13$1CIo6uc4/fsb9Fu5uk0A6OVHc.CDIHW8mOU.YCTPonU2BFtggcloW',
+        //                          'email'=>'user@gmail.com ',
+        //                          'level'=>'1',
+        //                          'status'=>'10',
+        //                          'created_at'=>1466698045,
+        //                          'updated_at'=>1466698045
+        //                          ]);
                                  
     }
 

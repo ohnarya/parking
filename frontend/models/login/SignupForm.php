@@ -67,11 +67,15 @@ class SignupForm extends Model
         /*
         * assign a role to log-in user.
         */
-        $auth = \Yii::$app->authManager;           
-        if($user->level === User::USER_LEVEL){
-            $auth->assign($auth->getRole('user'), $user->getId());
-        }else if($user->level === User::ADMIN_LEVEL){
-            $auth->assign($auth->getRole('admin'), $user->getId());                    
+        $auth = \Yii::$app->authManager;      
+        try{
+            if($user->level === User::USER_LEVEL){
+                $auth->assign($auth->getRole('user'), $user->getId());
+            }else if($user->level === User::ADMIN_LEVEL){
+                $auth->assign($auth->getRole('admin'), $user->getId());                    
+            }
+        }catch(Exception $e){
+            
         }
         return $user; 
     }

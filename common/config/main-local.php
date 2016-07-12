@@ -1,5 +1,5 @@
 <?php
-$url = parse_url(getenv("DATABASE_URL"));
+$url = parse_url("postgres://ubuntu:parking@localhost:5432/parking");
 $dsn = 'pgsql:host='.$url['host'].';port='.$url['port'].';dbname='.substr($url["path"], 1);
 $username = $url["user"];
 $password = $url["pass"];
