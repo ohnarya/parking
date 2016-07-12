@@ -82,7 +82,10 @@ $this->title='Search Parking Lot';
     <?php if(isset($suggestionDP)){  ?>
     
     <div class='margin-sm'>
-        <h3>Search Results...</h3>    
+        <h3>Search Results </h3>    
+        <p>To see <span class='hightlighted-word'>a detailed route</span>, click on suggestions. 
+           To save <span class='hightlighted-word'>the current choice</span> for future usage in prerefence parking, click <?=Html::a('select','#',['class'=>'btn-xs btn-danger']) ?> button below.</p>
+        <br>
         <div class="suggestions">
             <?= ListView::widget([
                     'dataProvider' => $suggestionDP,

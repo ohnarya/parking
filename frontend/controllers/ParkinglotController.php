@@ -113,7 +113,7 @@ class ParkinglotController extends Controller
     public function actionSearch()
     {
         date_default_timezone_set('America/Chicago');         
-        $model = new ParkinglotSearchForm();
+
         $user = Users::findOne(Yii::$app->user->identity->id);
 
         $parkinglot = ParkingLot::find()->select('permit')->where(['active'=>true])->all();
@@ -121,7 +121,7 @@ class ParkinglotController extends Controller
         $destarray = ArrayHelper::map($destination, 'name', 'name');
         $parkarray = ArrayHelper::map($parkinglot, 'permit', 'permit');        
 
-        
+        $model = new ParkinglotSearchForm();        
         if($model->load(\Yii::$app->request->post())){
             $suggestions=$this->reasoning($model); 
             

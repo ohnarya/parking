@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use frontend\models\destination\Destination;
 use yii\helpers\Url;
