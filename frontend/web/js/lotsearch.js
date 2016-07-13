@@ -1,7 +1,5 @@
 function storeHistory(lot){
-  console.log("storehistory");
   var dest = $("#destination").val();
-  // var lot  = $("#parkinglotsearchform-permit").val(); 
   
   $.post({url:'/index.php?r=parkinglot%2Fstore', 
           data:{'dest': dest, 'lot':lot},
@@ -9,9 +7,9 @@ function storeHistory(lot){
   }).done(function(data){
     
     if(!data) 
-      window.status = "History was not stored properly.";
+      console.log("History was not stored properly.");
     else{
-      window.status = "History was stored successfully.";
+      console.log("History was stored successfully.");
     }  
      
   }).fail(function(data){
