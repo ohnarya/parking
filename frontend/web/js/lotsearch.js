@@ -3,7 +3,7 @@ function storeHistory(lot){
   var dest = $("#destination").val();
   // var lot  = $("#parkinglotsearchform-permit").val(); 
   
-  $.post({url:'/parkinglot/frontend/web/index.php?r=parkinglot%2Fstore', 
+  $.post({url:'/index.php?r=parkinglot%2Fstore', 
           data:{'dest': dest, 'lot':lot},
           dataType: 'json'
   }).done(function(data){
