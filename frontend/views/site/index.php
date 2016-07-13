@@ -50,7 +50,7 @@ $this->title = 'Jiyoung\' Portpolio';
                     <p class="lead">Google Map APIs are used as well.</p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="../web/img/smartparking.jpg" alt="smartparking">
+                    <img class="img-responsive" src="img/smartparking.jpg" alt="smartparking">
                 </div>
             </div>
 
@@ -72,7 +72,7 @@ $this->title = 'Jiyoung\' Portpolio';
                     <small>* This uses AWS APIs.</small>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="../web/img/searchitem.png" alt="smartparking">
+                    <img class="img-responsive" src="img/searchitem.png" alt="smartparking">
                 </div>
             </div>
 
