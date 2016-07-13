@@ -13,6 +13,7 @@ $this->title='Manage Destinations';
 ?>
 
 <?php
+$info = 'These are buildings on Texas A&M Campus on College Station, TX';
 $parkinglot = new Destination();
 $gridColumns = [
 [
@@ -46,7 +47,13 @@ $gridColumns = [
             <?php
                 echo GridView::widget([
                     'dataProvider'=> $dataProvider,
-                    // 'filterModel' => $parkinglot,
+                    'panel'=>[
+                        'type'=>GridView::TYPE_PRIMARY,
+                        'heading'=>false,
+                        'footer'=>false,
+                        'after'=>'<i class="fa fa-check-circle" aria-hidden="true"></i> '.$info
+                    ],
+                    'toolbar'=> [],
                     'columns' => $gridColumns,
                     'responsive'=>true,
                     'hover'=>true

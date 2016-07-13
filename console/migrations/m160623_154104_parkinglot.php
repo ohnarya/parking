@@ -19,19 +19,62 @@ class m160623_154104_parkinglot extends Migration
             'easyparking'          => $this->boolean()->defaultValue(false),
             'easyexit'             => $this->boolean()->defaultValue(false),
             'active'               => $this->boolean()->defaultValue(true),
-            'created_at'           => $this->integer()->notNull(),
-            'updated_at'           => $this->integer()->notNull(),
+            'created_at'           => $this->integer(),
+            'updated_at'           => $this->integer()
         ]);        
 
-        // $this->insert('TB_PARKING_LOT',['username'=>'admin',
-        //                          'auth_key'=>'vmE63l-oAZFRabHk1ZNDhHm7vlFMv3nf',
-        //                          'password_hash'=>'$2y$13$b/ivuBUmlzAGhj0PQYEVvO6oXk9QspKuLHmoPafTHTgRNrBiRuOgq',
-        //                          'email'=>'admin@gmail.com',
-        //                          'level'=>'2',
-        //                          'status'=>'10',
-        //                          'created_at'=>1468097874,
-        //                          'updated_at'=>1468097874
-        //                          ]);
+        $this->insert('TB_PARKING_LOT',['permit'=>'Lot 54',
+                                 'address'=>'Bizzell St, College Station',
+                                 'place'=>'{"lat":30.61959570451994,"lng":-96.33708894252777}',
+                                 'night'=>1,
+                                 'summer'=>1,
+                                 'football'=>0,
+                                 'construction'=>0,
+                                 'easyparking'=>1,
+                                 'easyexit'=>1
+                                 ]);
+        $this->insert('TB_PARKING_LOT',['permit'=>'Lot 55',
+                                 'address'=>'Lamar St, College Station',
+                                 'place'=>'{"lat":30.6178045069597,"lng":-96.3355815410614}',
+                                 'night'=>1,
+                                 'summer'=>1,
+                                 'football'=>1,
+                                 'construction'=>0,
+                                 'easyparking'=>1,
+                                 'easyexit'=>1
+                                 ]);
+                                 
+        $this->insert('TB_PARKING_LOT',['permit'=>'Lot 47',
+                                 'address'=>'Polo Rd, College Station',
+                                 'place'=>'{"lat":30.621700780938745,"lng":-96.33723378181458}',
+                                 'night'=>1,
+                                 'summer'=>1,
+                                 'football'=>1,
+                                 'construction'=>0,
+                                 'easyparking'=>0,
+                                 'easyexit'=>1
+                                 ]);
+                                 
+        $this->insert('TB_PARKING_LOT',['permit'=>'Lot 65',
+                                 'address'=>'161 Wellborn Rd, College Station',
+                                 'place'=>'{"lat":30.60933741841523,"lng":-96.34209930896759}',
+                                 'night'=>1,
+                                 'summer'=>0,
+                                 'football'=>0,
+                                 'construction'=>0,
+                                 'easyparking'=>1,
+                                 'easyexit'=>0
+                                 ]);
+        $this->insert('TB_PARKING_LOT',['permit'=>'Lot 50',
+                         'address'=>'Polo Rd, College Station',
+                         'place'=>'{"lat":30.623381116101353,"lng":-96.33749127388} ',
+                         'night'=>1,
+                         'summer'=>1,
+                         'football'=>0,
+                         'construction'=>0,
+                         'easyparking'=>1,
+                         'easyexit'=>1
+                                 ]);    
     }
 
     public function safeDown()

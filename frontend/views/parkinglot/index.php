@@ -13,6 +13,7 @@ $this->title='Manage Parking Lots';
 ?>
 
 <?php
+$info = 'These are lots on Texas A&M Campus in College Station, TX.';
 $parkinglot = new ParkingLot();
 $gridColumns = [
 [
@@ -60,7 +61,7 @@ $gridColumns = [
 ?>
 <div  class="col-md-6 col-sm-12">
     <h1><?= Html::encode($this->title) ?></h1>
-    <?= $this->render('_parkingRuleModal');?>
+    <?= $this->render('_parkingRuleModal');?><br>
     <br>
   
     <div class='row'>
@@ -68,8 +69,14 @@ $gridColumns = [
             <?php
                 echo GridView::widget([
                     'dataProvider'=> $dataProvider,
-                    // 'filterModel' => $parkinglot,
                     'columns' => $gridColumns,
+                    'panel'=>[
+                        'type'=>GridView::TYPE_PRIMARY,
+                        'heading'=>false,
+                        'footer'=>false,
+                        'after'=>'<i class="fa fa-check-circle" aria-hidden="true"></i> '.$info
+                    ],
+                    'toolbar'=> [],
                     'responsive'=>true,
                     'hover'=>true
                 ]);
