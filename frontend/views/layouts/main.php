@@ -30,7 +30,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Hwang, Jiyoung',
+        'brandLabel' => 'Home',
         'brandUrl' => Yii::$app->homeUrl,
         'renderInnerContainer' => false,
         'options' => [
@@ -59,8 +59,8 @@ AppAsset::register($this);
     }
     
     $leftItems = [
-        ['label' => 'Parking Lot', 'items'=> $parkingSubmemuItems],
-        ['label' => 'Search Item', 'url' => ['/search/index']],
+        ['label' => 'Smart Parking', 'items'=> $parkingSubmemuItems],
+        ['label' => 'Search Items', 'url' => ['/search/index']],
     ];
         
     echo Nav::widget([
@@ -88,14 +88,9 @@ AppAsset::register($this);
     NavBar::end();
 ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid no-padding">
         <div class="col-md-12 no-padding">
             <div class="alert"><?= Alert::widget() ?></div>
-            <div class="breadcrumbs">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            </div>
             <?= $content ?>
         </div>
     </div>
