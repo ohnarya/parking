@@ -1,6 +1,6 @@
 
 
->*This is Jiyoung's Web Application Project which took roughly 2 weeks (doing part-time job and learning tennis).*
+>*This is [Jiyoung's Web Application Project] (https://intelligent-parking.herokuapp.com/) which took roughly 2 weeks (doing part-time job and learning tennis).*
 >*This application uses skills below.*
 >*I hope you like this.*
 
@@ -14,7 +14,7 @@ Visit [https://intelligent-parking.herokuapp.com/] (https://intelligent-parking.
 
 2. Google Map APIs
 ===================
-## Smart parking ## mainly uses [GoogleMap APIs] (https://developers.google.com/maps/web-services/).
+** Smart parking ** mainly uses [GoogleMap APIs] (https://developers.google.com/maps/web-services/).
 It communicates to Google Map services and abtains locations, routes, geocodes, addresses, etc.
 
 
@@ -37,4 +37,5 @@ Also, important several features are shown to only **admin** level users. For ex
 
 5. Amazon Web Service 
 ======================
-##Search Items## uses AWS APIs.
+
+**Search Items** uses AWS APIs.
