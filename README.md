@@ -7,7 +7,7 @@
 1.PHP and Yii 2 Advanced Project Template on Heroku
 ===============================
 
-This application is written in [PHP](http://php.net/manual/en/tutorial.php) on [Yii 2 Advanced Project Template](http://www.yiiframework.com/) using open-source relational database[PostgreSQL](https://www.postgresql.org/). It is running on [Heroku](https://www.heroku.com/) which provides free hosting service. 
+This application is written in [PHP](http://php.net/manual/en/tutorial.php) on [Yii 2 Advanced Project Template](http://www.yiiframework.com/) using open-source relational database [PostgreSQL](https://www.postgresql.org/). It is running on [Heroku](https://www.heroku.com/) which provides free hosting service. 
 
 Visit [https://intelligent-parking.herokuapp.com/] (https://intelligent-parking.herokuapp.com/) and see what it looks like.
 ###### It takes time in the beginning because it should be awaken. (free service) 
