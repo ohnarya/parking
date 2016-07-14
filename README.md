@@ -14,6 +14,7 @@ Visit [https://intelligent-parking.herokuapp.com/] (https://intelligent-parking.
 
 2. Google Map APIs
 ===================
+
 ** Smart parking ** mainly uses [GoogleMap APIs] (https://developers.google.com/maps/web-services/).
 It communicates to Google Map services and abtains locations, routes, geocodes, addresses, etc.
 
