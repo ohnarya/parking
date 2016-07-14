@@ -2,7 +2,14 @@
 
 >*This is [Jiyoung's Web Application Project] (https://intelligent-parking.herokuapp.com/) which took roughly 2 weeks (doing part-time job and learning tennis).*
 >*This application uses skills below.*
->*I hope you like this.*
+
+>**Smart Parking** suggests the best parking lots in **3 perspectives** based on.
+
+>1. **Distance** - the closest parking lot to the selected destination.
+>2. **Popularity** - each destination has history, which parking lot has been used the most by users. 
+>3. **My preference** - every user can set their own preferences such as 'easy to park','easy to exit', and 'use my history' on Account Setting page. Even if either the parking lot that the user has chosen to a destination is far away or no one ever chose the parking lot, if the user has been parking that lot, the application suggests the parking lot as well.
+
+>This application collects clients IPs in database.
 
 1.PHP and Yii 2 Advanced Project Template on Heroku
 ===============================
@@ -15,7 +22,7 @@ Visit [https://intelligent-parking.herokuapp.com/] (https://intelligent-parking.
 2. Google Map APIs
 ===================
 
-** Smart parking ** mainly uses [GoogleMap APIs] (https://developers.google.com/maps/web-services/).
+**Smart parking** mainly uses [GoogleMap APIs] (https://developers.google.com/maps/web-services/).
 It communicates to Google Map services and abtains locations, routes, geocodes, addresses, etc.
 
 
