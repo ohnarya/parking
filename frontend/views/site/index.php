@@ -41,7 +41,7 @@ $this->title = 'Jiyoung\' Portpolio';
                 <div class="col-lg-12 col-sm-12">
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
-                    <h2 class="section-heading">Smart parking</h2>
+                    <h2 class="section-heading">Project 1: Smart parking</h2>
                 </div>
                 <div class="col-lg-5 col-sm-6">
                     <p class="lead">The Smart Parking suggests the best parking lot for the destination based on users history and preferences following the rules and regulations of the parking system.<br><font size=2><b>*This System roughly follows the Texas A&M parking policies.</b></font></p>
@@ -65,7 +65,7 @@ $this->title = 'Jiyoung\' Portpolio';
                 <div class="col-lg-12 col-sm-12">
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
-                    <h2 class="section-heading">Search Items from Amazon.com</h2>
+                    <h2 class="section-heading">Project 2: Search Items from Amazon.com</h2>
                 </div>
                 <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
                     <p class="lead">The Search Items retrieves items from Amazon.com.</p>
