@@ -1,55 +1,37 @@
-Yii 2 Advanced Project Template
+
+
+>This is Jiyoung's Web Application Project which took roughly 2 weeks (doing park-time jobs and learning tennis).
+>This application uses skills below.
+>I hope you like this.
+
+1.PHP and Yii 2 Advanced Project Template on Heroku
 ===============================
 
-Yii 2 Advanced Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-developing complex Web applications with multiple tiers.
+This application is written in [PHP](http://php.net/manual/en/tutorial.php) on [Yii 2 Advanced Project Template](http://www.yiiframework.com/) using open-source relational database[PostgreSQL](https://www.postgresql.org/). It is running on [Heroku](https://www.heroku.com/) which provides free hosting service. 
 
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+Visit [https://intelligent-parking.herokuapp.com/] (https://intelligent-parking.herokuapp.com/) and see what it looks like.
+###### It takes time in the beginning because it should be awaken. (free service) 
 
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
+2. Google Map APIs
+===================
+## Smart parking ## mainly uses [GoogleMap APIs] (https://developers.google.com/maps/web-services/).
+It communicates to Google Map services and abtains locations, routes, geocodes, addresses, etc.
 
-Documentation is at [docs/guide/README.md](docs/guide/README.md).
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-advanced/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-advanced/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
+3. Open source libraries
+===================================
 
-DIRECTORY STRUCTURE
--------------------
+This appliccation uses open source libraries such as [Bootstrap](http://getbootstrap.com/), [Awesomefonts](http://fontawesome.io/),[Jquery](https://jquery.com/),etc.
 
-```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
-backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
-tests                    contains various tests for the advanced application
-    codeception/         contains tests developed with Codeception PHP Testing Framework
-```
-# tamu_parking_lot
+
+4. RBAC (Rule-Based Access Controll)
+===================================
+
+This application has 2 user levels: **user** and **admin**
+The menu, Searching parking lots is open to the public, which means everybody can use it.
+If you sign up, or use the id, 'user', the level of access to the system is **user**. 
+This level can manage its own account including my permit as well as automatically store history for the parking lot.
+This makes it possible to the application suggests the most preferable parking lot suggestions on each user.
+
+Also, important several features are shown to only **admin** level users. For example, manage destinations and parking lots are only open to **admin** level users.
+
