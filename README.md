@@ -1,6 +1,6 @@
 
 
->*This is Jiyoung's Web Application Project which took roughly 2 weeks (doing park-time job and learning tennis).*
+>*This is Jiyoung's Web Application Project which took roughly 2 weeks (doing part-time job and learning tennis).*
 >*This application uses skills below.*
 >*I hope you like this.*
 
